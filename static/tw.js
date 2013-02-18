@@ -10,11 +10,20 @@ function post(q){
 		url: "/search.json",
 		data: {"query": q},
 		success: function(data){
-			console.log("post success " + typeof(data));
+			console.log("post success " + data);
 		}
 	});
 }
 
+function get(){
+	$.ajax({
+		type: "get",
+		url: "/search",
+		success: function(data){
+			console.log(data);
+		}
+	});
+}
 
 $(document).ready(function(){
 	post("kanye");

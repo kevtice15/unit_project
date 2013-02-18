@@ -77,7 +77,10 @@ function tweetGetter(q){
 }
 
 app.get('/search', function(request, response){
-	
+	response.send({
+		responseJSON: JSON.parse(responseJSON),
+		success: (responseJSON !== undefined)
+	});
 
 });
 
@@ -85,7 +88,7 @@ app.post('/search.json', function(request, response){
 	requestQuery = request.body.query;
 	console.log("request: " + request.body.query);
 	responseJSON = tweetGetter();
-	response.send(true);
+	response.send(responseJSON !== undefined);
 });
 
 app.listen(8889);
