@@ -8,9 +8,10 @@ var http = require('http'),
 	https = require('https');
 
 app.get("/static/:filename", function(request, response){
-	response.sendfile("static/index.html");
+	response.sendfile("static/" + request.params.filename);
 });
 
+var requestQuery;
 /*
 var options = {
 	host: 'search.twitter.com',
@@ -46,34 +47,38 @@ exports.getJSON = function(options, onResult){
 }
 */
 
-
-app.get('/search.json', function(request, response){
+function tweetGetter(){
+	console.log("current query" + requestQuery);
 	var options = {
 		host: 'search.twitter.com',
-		port: 443,
-		path: '/search.json',
+		path: "/search.json?q=" + requestQuery,
 		method: 'GET',
 		headers: {
 			'Content-Type': 'application/json'
 		}
 	};
-
-	var req = http.request(options, function(res){
-		console.log('STATUS: ' + res.statusCode);
-		console.log('HEADERS: ' + JSON.stringify(res.headers));
-		res.setEncoding('utf8');
-		res.on('data', function (chunk) {
-			console.log('BODY: ' + chunk);
+	console.log("path option: " + options.path);
+	callback = function(response){
+		console.log("I enter callback");
+		var str = '';
+		response.on('data', function(chunk){
+			str += chunk;
 		});
-	});
 
-	req.on('error', function(e) {
-		console.log('problem with request: ' + e.message);
-	});
+		response.on('end', function(){
+			console.log(str);
+		});
 
-	req.write("?q=" + request.body.query);
+		//console.log(http.request(options, callback));
+	};
+	http.request(options, callback).end();
 
-	response.send(res);
+}
+
+app.post('/search.json', function(request, response){
+	var requestQuery = request.body.query;
+	console.log("request: " + request.body.query);
+	response.send(requestQuery);
 });
 
 app.listen(8889);

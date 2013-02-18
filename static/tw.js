@@ -1,17 +1,21 @@
 var response;
 
-function get(q){
+function getJSON(){
+	console.log("haha");
+}
+
+function post(q){
 	$.ajax({
-		type: "get",
+		type: "post",
 		url: "/search.json",
-		data: {query: q},
+		data: {"query": q},
 		success: function(q){
-			console.log("get success " + q);
+			console.log("post success " + q);
 		}
 	});
 }
 
 
 $(document).ready(function(){
-	get("kanye");
+	post("kanye");
 });
