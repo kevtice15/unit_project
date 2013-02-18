@@ -1,0 +1,13 @@
+.sidebar{
+	width: 29%;
+	display: inline-block;
+}
+
+.main{
+	width: 70%;
+	display: inline-block;
+}
+
+.row{
+	width: 100%;
+}
