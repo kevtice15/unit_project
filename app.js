@@ -12,6 +12,7 @@ app.get("/static/:filename", function(request, response){
 });
 
 var requestQuery;
+var responseJSON;
 /*
 var options = {
 	host: 'search.twitter.com',
@@ -47,7 +48,7 @@ exports.getJSON = function(options, onResult){
 }
 */
 
-function tweetGetter(){
+function tweetGetter(q){
 	console.log("current query" + requestQuery);
 	var options = {
 		host: 'search.twitter.com',
@@ -71,14 +72,20 @@ function tweetGetter(){
 
 		//console.log(http.request(options, callback));
 	};
-	http.request(options, callback).end();
+	return http.request(options, callback).end();
 
 }
 
+app.get('/search', function(request, response){
+	
+
+});
+
 app.post('/search.json', function(request, response){
-	var requestQuery = request.body.query;
+	requestQuery = request.body.query;
 	console.log("request: " + request.body.query);
-	response.send(requestQuery);
+	responseJSON = tweetGetter();
+	response.send(true);
 });
 
 app.listen(8889);

@@ -9,8 +9,8 @@ function post(q){
 		type: "post",
 		url: "/search.json",
 		data: {"query": q},
-		success: function(q){
-			console.log("post success " + q);
+		success: function(data){
+			console.log("post success " + typeof(data));
 		}
 	});
 }
