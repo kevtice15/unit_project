@@ -79,6 +79,9 @@ function tweetGetter(){
 
 app.get('/search', function(request, response){
 	console.log("********Le response JSON*******" + responseJSON);
+	if(responseJSON.substring(0,5) === 'false'){
+		responseJSON = responseJSON.substring(5);
+	}
 	response.send({
 		data: responseJSON,
 		success: (responseJSON !== undefined)

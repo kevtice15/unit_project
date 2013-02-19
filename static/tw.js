@@ -1,5 +1,11 @@
 var response;
 
+
+function refreshDOM(){
+	console.log(response);
+	$('#tweetcontainer').append('<li>').html(response.results[0].text);
+}
+
 function getJSON(){
 	console.log("haha");
 }
@@ -21,10 +27,10 @@ function get(){
 		url: "/search",
 		datatype: "json",
 		success: function(data){
-			$('#tweetcontainer').append('<li>').html("Hello There!");
+			response = JSON.parse(data.data);
 			//$("#tweetcontainer").append('<li>').html(data);
 			//$("t")
-			console.log(data);
+			console.log(JSON.parse(data.data));
 		}
 	});
 }
