@@ -48,7 +48,7 @@ exports.getJSON = function(options, onResult){
 }
 */
 
-function tweetGetter(q){
+function tweetGetter(){
 	console.log("current query" + requestQuery);
 	var options = {
 		host: 'search.twitter.com',
@@ -64,6 +64,7 @@ function tweetGetter(q){
 		var str = '';
 		response.on('data', function(chunk){
 			str += chunk;
+			responseJSON += chunk;
 		});
 
 		response.on('end', function(){
@@ -77,8 +78,9 @@ function tweetGetter(q){
 }
 
 app.get('/search', function(request, response){
+	console.log("********Le response JSON*******" + responseJSON);
 	response.send({
-		responseJSON: JSON.parse(responseJSON),
+		data: responseJSON,
 		success: (responseJSON !== undefined)
 	});
 
@@ -88,7 +90,10 @@ app.post('/search.json', function(request, response){
 	requestQuery = request.body.query;
 	console.log("request: " + request.body.query);
 	responseJSON = tweetGetter();
-	response.send(responseJSON !== undefined);
+	console.log("!!response: " + responseJSON);
+	response.send({
+		success: responseJSON !== undefined
+	});
 });
 
 app.listen(8889);

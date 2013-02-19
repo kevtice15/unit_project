@@ -19,7 +19,11 @@ function get(){
 	$.ajax({
 		type: "get",
 		url: "/search",
+		datatype: "json",
 		success: function(data){
+			$('#tweetcontainer').append('<li>').html("Hello There!");
+			//$("#tweetcontainer").append('<li>').html(data);
+			//$("t")
 			console.log(data);
 		}
 	});
