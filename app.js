@@ -48,8 +48,8 @@ exports.getJSON = function(options, onResult){
 }
 */
 
-function tweetGetter(){
-	console.log("current queryn " + requestQuery);
+function tweetGetter(callBack2){
+	console.log("current query " + requestQuery);
 	var options = {
 		host: 'search.twitter.com',
 		path: "/search.json?q=" + requestQuery,
@@ -63,12 +63,14 @@ function tweetGetter(){
 		console.log("I enter callback");
 		var str = '';
 		response.on('data', function(chunk){
-			str += chunk;
-			responseJSON += chunk;
+			if(chunk){
+				str += chunk;
+				//responseJSON += chunk;
+			}
 		});
 
 		response.on('end', function(){
-			console.log(str);
+			callBack2(str);
 		});
 
 		//console.log(http.request(options, callback));
@@ -94,7 +96,16 @@ function tweetGetter(){
 
 app.get('/search/:keyword', function(request, response){
 	requestQuery = request.params.keyword;
-	tweetGetter();
+	tweetGetter(function(str){
+		parseData(str);
+		console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+		response.send({
+			
+			data: str,
+			success: (str !== undefined)
+		});
+	
+	});
 	
 	/*
 	want to have this send on the return of the twitter feed
@@ -108,30 +119,32 @@ app.get('/search/:keyword', function(request, response){
 		// success: (responseJSON !== undefined)
 	// });
 	
-	(function(){
-		setTimeout(function(){
-			
-			parseData();
-			console.log("setTimeout " + responseJSON);
-			response.send({
-			data: responseJSON,
-			success: (responseJSON !== undefined)
-		});
-		},1000);
-	})();	
+	// (function(){
+		// setTimeout(function(){
+			// parseData();
+			// console.log("setTimeout " + responseJSON);
+			// response.send({
+				// data: responseJSON,
+				// success: (responseJSON !== undefined)
+		// });
+		// },1000);
+	// })();	
 	
 	
 	
 
 });
 
-function parseData(){
-	if(responseJSON.substring(0,5) === 'false'){
-		responseJSON = responseJSON.substring(5);
-	}
-	else if (responseJSON.substring(0,9) === 'undefined'){
-		responseJSON = responseJSON.substring(9);
-	}
+function parseData(str){
+	// if(responseJSON.substring(0,5) === 'false'){
+		// responseJSON = responseJSON.substring(5);
+	// }
+	// else if (responseJSON.substring(0,9) === 'undefined'){
+		// responseJSON = responseJSON.substring(9);
+	// }
+	console.log(str);
+	str = JSON.parse(str);
+	
 }
 
 

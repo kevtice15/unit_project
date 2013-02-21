@@ -2,11 +2,12 @@ var response;
 
 
 function refreshDOM(){
-	console.log("refreshDOM" + response);
-	$(response.results).each(function(i,tweet){
-		var liEl = $("<li>").html(tweet.text);
-		$('#tweetcontainer').append(liEl);
-	});
+	console.log("refreshDOM!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" );//+ response);
+	 $(response.results).each(function(i,tweet){
+		 var liEl = $("<li>").html(tweet.text);
+		 $('#tweetcontainer').append(liEl);
+	 });
+	//$("#tweetcontainer").append(response.results);
 }
 
 function getJSON(){
@@ -43,12 +44,21 @@ function get(keyword){
 	$.ajax({
 		type: "get",
 		url: "/search/" + encodeURI(keyword),
-		//datatype: "json",
+		datatype: "json",
 		success: function(data){
 			//response = JSON.parse(data.data);
-			response = data.data;
-			console.log(JSON.parse(data.data));
+			//console.log(JSON.parse(data.data));
+			
+			temp = data.data;
+			temp= temp.replace(/\n/g, '');
+			temp = temp.replace(/\r/g, '');
+			//temp = temp.replace("a href", '', "g");
+			console.log(temp);
+			response = JSON.parse(temp);
 			refreshDOM();
+		},
+		error: function(){
+			console.log("error");
 		}
 	});
 }
