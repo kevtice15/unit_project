@@ -2,8 +2,11 @@ var response;
 
 
 function refreshDOM(){
-	console.log(response);
-	$('#tweetcontainer').append('<li>').html(response.results[0].text);
+	console.log("refreshDOM" + response);
+	$(response.results).each(function(i,tweet){
+		var liEl = $("<li>").html(tweet.text);
+		$('#tweetcontainer').append(liEl);
+	});
 }
 
 function getJSON(){
@@ -21,20 +24,41 @@ function post(q){
 	});
 }
 
-function get(){
+// function get(){
+	// $.ajax({
+		// type: "get",
+		// url: "/search.json",
+		// datatype: "json",
+		// success: function(data){
+			// response = JSON.parse(data.data);
+			//$("#tweetcontainer").append('<li>').html(data);
+		//	$("t")
+			// console.log(JSON.parse(data.data));
+			// refreshDOM();
+		// }
+	// });
+// }
+
+function get(keyword){
 	$.ajax({
 		type: "get",
-		url: "/search",
-		datatype: "json",
+		url: "/search/" + encodeURI(keyword),
+		//datatype: "json",
 		success: function(data){
-			response = JSON.parse(data.data);
-			//$("#tweetcontainer").append('<li>').html(data);
-			//$("t")
+			//response = JSON.parse(data.data);
+			response = data.data;
 			console.log(JSON.parse(data.data));
+			refreshDOM();
 		}
 	});
 }
 
+
+
 $(document).ready(function(){
-	post("kanye");
+	//post("kanye");
+	$("#submitButton").click(function(){
+		console.log($("#query-input").val());
+		get($("#query-input").val());
+	});
 });

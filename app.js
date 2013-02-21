@@ -49,7 +49,7 @@ exports.getJSON = function(options, onResult){
 */
 
 function tweetGetter(){
-	console.log("current query" + requestQuery);
+	console.log("current queryn " + requestQuery);
 	var options = {
 		host: 'search.twitter.com',
 		path: "/search.json?q=" + requestQuery,
@@ -77,17 +77,63 @@ function tweetGetter(){
 
 }
 
-app.get('/search', function(request, response){
-	console.log("********Le response JSON*******" + responseJSON);
+// app.get('/search.json', function(request, response){
+	// console.log("********Le response JSON*******" + responseJSON);
+	// requestQuery = request.body.query;
+	// tweetGetter();
+	
+	// if(responseJSON.substring(0,5) === 'false'){
+		// responseJSON = responseJSON.substring(5);
+	// }
+	// response.send({
+		// data: responseJSON,
+		// success: (responseJSON !== undefined)
+	// });
+
+// });
+
+app.get('/search/:keyword', function(request, response){
+	requestQuery = request.params.keyword;
+	tweetGetter();
+	
+	/*
+	want to have this send on the return of the twitter feed
+	or write to a file in the fn above????
+	or us .on and create an event emitter type thing
+	ORRR could I somehow create a closure with the .on end event in the tweet getter function to send the data
+	*/
+	// setTimeout(parseData,500);
+	// response.send({
+		// data: responseJSON,
+		// success: (responseJSON !== undefined)
+	// });
+	
+	(function(){
+		setTimeout(function(){
+			
+			parseData();
+			console.log("setTimeout " + responseJSON);
+			response.send({
+			data: responseJSON,
+			success: (responseJSON !== undefined)
+		});
+		},1000);
+	})();	
+	
+	
+	
+
+});
+
+function parseData(){
 	if(responseJSON.substring(0,5) === 'false'){
 		responseJSON = responseJSON.substring(5);
 	}
-	response.send({
-		data: responseJSON,
-		success: (responseJSON !== undefined)
-	});
+	else if (responseJSON.substring(0,9) === 'undefined'){
+		responseJSON = responseJSON.substring(9);
+	}
+}
 
-});
 
 app.post('/search.json', function(request, response){
 	requestQuery = request.body.query;
