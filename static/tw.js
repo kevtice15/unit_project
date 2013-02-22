@@ -44,6 +44,7 @@ function get(keyword){
 	$.ajax({
 		type: "get",
 		url: "/search/" + encodeURI(keyword),
+		//url: "/place/" + encodeURI(keyword),
 		datatype: "json",
 		success: function(data){
 			//response = JSON.parse(data.data);
@@ -57,8 +58,8 @@ function get(keyword){
 			response = JSON.parse(temp);
 			refreshDOM();
 		},
-		error: function(){
-			console.log("error");
+		error: function(msg){
+			console.log("error:" + msg);
 		}
 	});
 }

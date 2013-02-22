@@ -51,8 +51,12 @@ exports.getJSON = function(options, onResult){
 function tweetGetter(callBack2){
 	console.log("current query " + requestQuery);
 	var options = {
-		host: 'search.twitter.com',
-		path: "/search.json?q=" + requestQuery,
+		//host: 'search.twitter.com',
+		//path: "/search.json?q=" + requestQuery + "&rpp=100",
+		//host: 'api.twitter.com',
+		//path: "/1.1/trends/place.json?id=" + requestQuery + "&rpp=100",
+		path: "https://api.twitter.com/1.1/trends/place.json?id=1",
+		
 		method: 'GET',
 		headers: {
 			'Content-Type': 'application/json'
