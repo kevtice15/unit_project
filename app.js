@@ -14,8 +14,11 @@ app.get("/static/:filename", function(request, response){
 var requestQuery;
 var responseJSON = '';
 
-var clientId = "VU0DICU13IR5L5YWZ23OGBCIMSUA2CCQILVXMV2QRQGRGKHN";
-var clientSecret = "3UB2V5MNWB0QUCGNA5DDIH05YU0BSOOE0DI05GISLLWWGN0D";
+var fsclientId = "VU0DICU13IR5L5YWZ23OGBCIMSUA2CCQILVXMV2QRQGRGKHN";
+var fsclientSecret = "3UB2V5MNWB0QUCGNA5DDIH05YU0BSOOE0DI05GISLLWWGN0D";
+
+var twclientId = "Bt2qpXMrCsbctcTSwxVU8Q";
+var twclientSecret = "j2EweBmhK7cknxr3WvIAZLl1SjVs7YmDKd0k66okVdA";
 /*
 var options = {
 	host: 'search.twitter.com',
@@ -54,17 +57,13 @@ exports.getJSON = function(options, onResult){
 function tweetGetter(callBack2){
 	console.log("current query " + requestQuery);
 	var options = {
-<<<<<<< HEAD
 		//host: 'search.twitter.com',
 		//path: "/search.json?q=" + requestQuery + "&rpp=100",
 		//host: 'api.twitter.com',
 		//path: "/1.1/trends/place.json?id=" + requestQuery + "&rpp=100",
 		path: "https://api.twitter.com/1.1/trends/place.json?id=1",
-		
-=======
 		host: 'search.twitter.com',
-		path: "/search.json?rpp=100&q=" + requestQuery,
->>>>>>> foursquare
+		//path: "/search.json?rpp=100&q=" + requestQuery,
 		method: 'GET',
 		headers: {
 			'Content-Type': 'application/json'
@@ -77,14 +76,10 @@ function tweetGetter(callBack2){
 		response.on('data', function(chunk){
 			if(chunk){
 				str += chunk;
-<<<<<<< HEAD
+
 				//responseJSON += chunk;
 			}
-=======
-			}
-			
-			responseJSON += chunk;
->>>>>>> foursquare
+			//responseJSON += chunk;
 		});
 
 		response.on('end', function(){
@@ -97,39 +92,12 @@ function tweetGetter(callBack2){
 
 }
 
-<<<<<<< HEAD
-// app.get('/search.json', function(request, response){
-	// console.log("********Le response JSON*******" + responseJSON);
-	// requestQuery = request.body.query;
-	// tweetGetter();
-	
-	// if(responseJSON.substring(0,5) === 'false'){
-		// responseJSON = responseJSON.substring(5);
-	// }
-	// response.send({
-		// data: responseJSON,
-		// success: (responseJSON !== undefined)
-	// });
 
-// });
-
-app.get('/search/:keyword', function(request, response){
-	requestQuery = request.params.keyword;
-	tweetGetter(function(str){
-		parseData(str);
-		console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-		response.send({
-			
-			data: str,
-			success: (str !== undefined)
-		});
-	
-=======
 function venueGetter(query, callback2){
 	console.log("current query" + query);
 	var options = {
 		host: "api.foursquare.com",
-		path: "/v2/venues/search?ll=" + query + "&client_id=" + clientId + "&client_secret=" + clientSecret + "&v=20130222",
+		path: "/v2/venues/search?ll=" + query + "&client_id=" + fsclientId + "&client_secret=" + fsclientSecret + "&v=20130222",
 		//path: "/v2/venues/search?ll=" + query,
 		method: 'GET',
 		headers: {
@@ -162,19 +130,46 @@ function venueGetter(query, callback2){
 	console.log("Gonna call the next line");
 	return https.request(options, callback).end();
 }
+// app.get('/search.json', function(request, response){
+	// console.log("********Le response JSON*******" + responseJSON);
+	// requestQuery = request.body.query;
+	// tweetGetter();
+	
+	// if(responseJSON.substring(0,5) === 'false'){
+		// responseJSON = responseJSON.substring(5);
+	// }
+	// response.send({
+		// data: responseJSON,
+		// success: (responseJSON !== undefined)
+	// });
+
+// });
+
+app.get('/search/:keyword', function(request, response){
+	requestQuery = request.params.keyword;
+	tweetGetter(function(str){
+		console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+		response.send({
+			data: parseData(str),
+			success: (str !== undefined)
+		});
+	});
+});
+
+
 
 app.get('/venues/search', function(request, response){
 	var lat = request.query.lat;
 	var lon = request.query.lon;
 	console.log("params = " + request.query);
 	console.log(lat + " " + lon);
-	var venues = venueGetter(lat + ',' + lon, function(resp){
-		return resp;
-	});
-	console.log("***********VENUES************" + venues);
-	response.send({
-		data: JSON.parse(venues),
-		success: (venues !== undefined)
+	venueGetter(lat + ',' + lon, function(resp){
+		//console.log("***********VENUES************" + venues);
+		parseData(resp);
+		response.send({
+			data: resp,
+			success: (resp !== undefined)
+		});
 	});
 });
 
@@ -186,7 +181,6 @@ app.get('/search', function(request, response){
 	response.send({
 		data: responseJSON,
 		success: (responseJSON !== undefined)
->>>>>>> foursquare
 	});
 	
 	/*
@@ -210,11 +204,7 @@ app.get('/search', function(request, response){
 				// success: (responseJSON !== undefined)
 		// });
 		// },1000);
-	// })();	
-	
-	
-	
-
+	// })();
 });
 
 function parseData(str){
@@ -226,6 +216,7 @@ function parseData(str){
 	// }
 	console.log(str);
 	str = JSON.parse(str);
+	return str;
 	
 }
 

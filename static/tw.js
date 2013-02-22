@@ -55,14 +55,12 @@ function getLocation(){
 }
 
 function refreshDOM(){
-<<<<<<< HEAD
 	console.log("refreshDOM!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" );//+ response);
-	 $(response.results).each(function(i,tweet){
-		 var liEl = $("<li>").html(tweet.text);
-		 $('#tweetcontainer').append(liEl);
-	 });
+	$(response.results).each(function(i,tweet){
+		var liEl = $("<li>").html(tweet.text);
+		$('#tweetcontainer').append(liEl);
+	});
 	//$("#tweetcontainer").append(response.results);
-=======
 	var listItem;
 	var paraItem;
 	/*
@@ -83,8 +81,6 @@ function refreshDOM(){
 		listItem.append(paraItem);
 		$("#tweetcontainer").append(listItem);
 	}
-	
->>>>>>> foursquare
 }
 
 
@@ -96,8 +92,8 @@ function getVenues(loc){
 	$.ajax({
 		type: "get",
 		url: "/venues/search?lat=" + encodeURI(loc.lat) + "&lon=" +  encodeURI(loc.lon),
-		success: function(data){
-			console.log("get success " + data.response);
+		success: function(response){
+			console.log(JSON.parse(response.data));
 			//refreshDOM();
 		}
 	});
@@ -138,7 +134,6 @@ function get(keyword){
 		//url: "/place/" + encodeURI(keyword),
 		datatype: "json",
 		success: function(data){
-<<<<<<< HEAD
 			//response = JSON.parse(data.data);
 			//console.log(JSON.parse(data.data));
 			
@@ -152,13 +147,11 @@ function get(keyword){
 		},
 		error: function(msg){
 			console.log("error:" + msg);
-=======
 			response = JSON.parse(data.data);
 			//$("#tweetcontainer").append('<li>').html(data);
 			//$("t")
 			console.log(JSON.parse(data.data));
 			refreshDOM();
->>>>>>> foursquare
 		}
 	});
 }
@@ -166,13 +159,10 @@ function get(keyword){
 
 
 $(document).ready(function(){
-<<<<<<< HEAD
 	//post("kanye");
 	$("#submitButton").click(function(){
 		console.log($("#query-input").val());
 		get($("#query-input").val());
 	});
-=======
 	getLocation();
->>>>>>> foursquare
 });
