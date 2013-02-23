@@ -12,6 +12,7 @@ app.get("/static/:filename", function(request, response){
 });
 
 var requestQuery;
+<<<<<<< HEAD
 var responseJSON = '';
 
 var fsclientId = "VU0DICU13IR5L5YWZ23OGBCIMSUA2CCQILVXMV2QRQGRGKHN";
@@ -29,41 +30,26 @@ var options = {
 		'Content-Type': 'application/json'
 	}
 };
+=======
+var latestTweet = 0;
+>>>>>>> client start post/get
 
-exports.getJSON = function(options, onResult){
-	console.log("getJSON start");
-
-	var port = options.port == 443 ? https : http;
-	var req = port.request(options, function(res){
-		var output = '';
-		console.log(options.host + ':' + res.statusCode);
-		res.setEncoding('utf8');
-		res.on('data', function(chunk){
-			output += chunk;
-		});
-		res.on('end', function(){
-			var obj = JSON.parse(output);
-			onResult(res.statusCode, obj);
-		});
-	});
-
-	req.on('error', function(err){
-
-	});
-	req.end;
-}
-*/
 
 function tweetGetter(callBack2){
 	console.log("current query " + requestQuery);
 	var options = {
-		//host: 'search.twitter.com',
-		//path: "/search.json?q=" + requestQuery + "&rpp=100",
+		host: 'search.twitter.com',
+		path: "/search.json?q=" + requestQuery + "&rpp=100&geocode=37.781157,-122.398720,25mi",
 		//host: 'api.twitter.com',
 		//path: "/1.1/trends/place.json?id=" + requestQuery + "&rpp=100",
+<<<<<<< HEAD
 		path: "https://api.twitter.com/1.1/trends/place.json?id=1",
 		host: 'search.twitter.com',
 		//path: "/search.json?rpp=100&q=" + requestQuery,
+=======
+		//path: "api.twitter.com/1.1/trends/place.json?id="+requestQuery,
+		
+>>>>>>> client start post/get
 		method: 'GET',
 		headers: {
 			'Content-Type': 'application/json'
@@ -76,8 +62,11 @@ function tweetGetter(callBack2){
 		response.on('data', function(chunk){
 			if(chunk){
 				str += chunk;
+<<<<<<< HEAD
 
 				//responseJSON += chunk;
+=======
+>>>>>>> client start post/get
 			}
 			//responseJSON += chunk;
 		});
@@ -88,10 +77,12 @@ function tweetGetter(callBack2){
 
 		//console.log(http.request(options, callback));
 	};
-	return http.request(options, callback).end();
+	//return http.request(options, callback).end();
+	return https.request(options, callback).end();
 
 }
 
+<<<<<<< HEAD
 
 function venueGetter(query, callback2){
 	console.log("current query" + query);
@@ -145,6 +136,8 @@ function venueGetter(query, callback2){
 
 // });
 
+=======
+>>>>>>> client start post/get
 app.get('/search/:keyword', function(request, response){
 	requestQuery = request.params.keyword;
 	tweetGetter(function(str){
@@ -182,6 +175,7 @@ app.get('/search', function(request, response){
 		data: responseJSON,
 		success: (responseJSON !== undefined)
 	});
+<<<<<<< HEAD
 	
 	/*
 	want to have this send on the return of the twitter feed
@@ -205,6 +199,8 @@ app.get('/search', function(request, response){
 		// });
 		// },1000);
 	// })();
+=======
+>>>>>>> client start post/get
 });
 
 function parseData(str){
@@ -221,7 +217,7 @@ function parseData(str){
 }
 
 
-app.post('/search.json', function(request, response){
+app.post('/search', function(request, response){
 	requestQuery = request.body.query;
 	console.log("request: " + request.body.query);
 	responseJSON = tweetGetter();

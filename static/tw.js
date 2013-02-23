@@ -162,7 +162,8 @@ $(document).ready(function(){
 	//post("kanye");
 	$("#submitButton").click(function(){
 		console.log($("#query-input").val());
-		get($("#query-input").val());
+		//get($("#query-input").val());
+		post($("#query-input").val());
 	});
 	getLocation();
 });
