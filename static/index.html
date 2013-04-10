@@ -1,0 +1,120 @@
+<html>
+<head>
+	<title></title>
+	<link rel='stylesheet' type='text/css' href='css/style.css'>
+	<link href='http://fonts.googleapis.com/css?family=Noto+Sans:400,700,400italic,700italic' rel='stylesheet' type='text/css'>  	
+	<script src="/socket.io/socket.io.js"></script>
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+    <script type="text/javascript" src="js/handlebars-1.0.rc.1.min.js"></script>
+	
+</head>
+ 	<body>
+	
+		<div id="buttons">
+	      <label> <input id="query" value='' type="text"/><button id="search-button" disabled onclick="search()">Search</button></label>
+	    </div>
+
+	   <!--  <label> <input id="chatbody" value='' type="text"/><button id="chatform">Msg</button></label>
+
+	    <div id="messages"> </div> -->
+
+		<div id="screen">		
+			<div>
+			<iframe id="ytplayer"> </iframe>	
+			</div>
+			
+			<div id="buttons">
+				<a class="button" id="play">Play</a>
+				<a class="button" id="pause">Pause</a>
+				<a class="button" id="p-seek">P-Seek</a>
+				<a class="button" id="next">Next</a>
+				<a class="button" id="stop">Stop</a>
+				<a class="button" id="mute">Mute</a>			
+			</div>
+			
+			<div id="data">
+				<span>Time:</span><span id="time" class="d"> 0<br></span>
+				<span>Duration:</span><span id="duration" class="d"></span>	
+				<span>% Loaded:</span><span id="loaded" class="d"> 0</span>
+				<span>Player State:</span><span id="state" class="d"></span>	
+				<span>Volume:</span><span id="volume" class="d"></span>
+				<span>Mute:</span><span id="muteS" class="d"> false</span>
+				<span>Quality:</span><span id="quality" class="d"></span>
+			</div>
+			
+		</div>
+
+
+<!-- handle bars template start -->				
+		<div id="searchResults">This will get replaced by handlebars.js</div>		
+			
+				
+		<script id="myTemplate" type="text/x-handlebars-template">
+			
+			{{#each items}}
+			<div class="video-result-wrapper" data-id="{{id.videoId}}">
+				<div class="thumbnail">
+					<img src="{{snippet.thumbnails.default.url}}">
+				</div>
+				<h2 class="search-title"> {{snippet.title}} </h2>
+				<p class="search-id"> {{id.videoId}}</p>
+			</div>	
+			{{/each}}	
+						
+		</script>
+<!-- handle bars template end		 -->
+
+
+
+<!-- handle bars template start -->				
+<!--
+		<div id="playlist-wrapper">This will get replaced by handlebars.js</div>		
+							
+		<script id="myTemplate2" type="text/x-handlebars-template">
+			
+			<div id='playlist-wrapper'>
+				<div id='playlist'></div>
+				<p>{{id}}</p>
+			</div>	
+		
+						
+		</script>
+-->
+<!-- handle bars template end		 -->
+
+
+			<div id='playlist-wrapper'>
+				<div id='playlist'></div>
+			</div>	
+
+
+
+
+
+<!--
+		<div id='searchResults'></div>
+		<div id='playlist-wrapper'>
+			<h2>Playlist</h2>
+			<div id='playlist'></div>
+		</div>
+-->	
+
+	<div style="float:left;width:100px;border-right:1px solid black;height:300px;padding:10px;overflow:scroll-y;">
+		<b>ROOMS</b>
+		<div id="rooms"></div>
+	</div>
+	<div style="float:left;width:300px;height:250px;overflow:scroll-y;padding:10px;">
+		<div id="conversation"></div>
+		<input id="data" style="width:200px;" />
+		<input type="button" id="datasend" value="send" />
+	</div>
+
+	<script src="js/clientSockets.js"></script>
+	<script type="text/javascript" src="js/player.js"></script>
+	<script src="js/search.js"></script>
+    <script src="https://apis.google.com/js/client.js?onload=onClientLoad"></script>
+  	</body>
+</html>
+
+
+
