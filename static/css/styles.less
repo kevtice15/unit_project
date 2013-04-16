@@ -1,0 +1,152 @@
+/* colors */
+@accentColor: #00a2ff;
+@backgroundColor: black;
+@buttonColor: white; 
+     
+/* width height */
+@screenWidth: 320px;
+@screenHeight: 400px;
+@playerHeight: 180px;
+ 
+/* margins */
+@buttonMarginTop: 5px;
+
+/* borders */
+@thinBorder: 1px solid black;
+
+/* fonts */
+@buttonFont: 'Noto Sans', sans-serif;
+@buttonWeight: 700; 
+@textWeight: 400;
+@buttonFontSize: 15px;
+
+#screen {
+	position: relative;
+	width: @screenWidth;
+	height: @screenHeight;
+	background-color: @backgroundColor;
+	border: @thinBorder;
+}
+
+#ytplayer {
+	width: @screenWidth;
+	height: @playerHeight;
+}
+
+#buttons {
+	position: relative;
+	margin-top: 5px;
+	padding: 3px;
+	cursor: hand;	
+	a {
+		font-family: @buttonFont;
+		font-weight: @buttonWeight;
+		font-size: @buttonFontSize;
+		background-color: @buttonColor;
+		border: @thinBorder;
+		padding: 2px;
+		&:hover { 
+				color: white;
+				background-color: #00a2ff; 
+		}
+	}
+}
+
+#data {
+	position: relative;
+	width: 100%;
+	color: @buttonColor;
+	font-family: @buttonFont;
+	padding: 3px;
+}
+
+.d {
+	color: @accentColor;
+}
+
+#searchResults {
+	position: relative;
+}
+
+.video-result-wrapper {
+	position: relative;
+	border: @thinBorder;
+	width: @screenWidth;
+	height: 75px;
+	text-align: center;
+	padding-top: 1px;
+	padding-bottom: 16px;
+
+	-webkit-transition: all 0.2s ease-in-out;
+	-moz-transition: all 0.2s ease-in-out;
+	-o-transition: all 0.2s ease-in-out;	
+	
+	&:hover {
+		background-color: rgba(0,162,255,0.7);	
+	}
+}
+
+#playlist-wrapper {
+	width: @screenWidth;
+	border: @thinBorder;
+	h2 {
+		text-align: center;
+	}
+}
+
+p {
+	font-size: small;
+	font-family: @buttonFont;
+	font-weight: @textWeight;
+	color: rgba(0,162,255,0.7);
+}
+
+.thumbnail {
+	position: relative;
+	top: 0px;
+	left: 0px;
+	height: 75px;
+	float: left;
+}
+
+
+h3 {
+	font-size: medium;
+	font-family: @buttonFont; 
+	font-weight: @textWeight; 	
+	
+	
+}
+
+.search-title {
+	font-size: 12px;
+	font-family: @buttonFont;  
+	font-weight: @buttonWeight; 		
+}
+
+.search-id {
+	font-size: small;
+	font-family: @buttonFont;  
+	font-weight: @textWeight; 
+	color: rgba(0,162,255,0.7);
+		
+}
+
+h2 {
+	font-family: @buttonFont;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

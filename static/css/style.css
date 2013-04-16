@@ -1,5 +1,5 @@
+/*
 #screen {
-	/*position: absolute;*/
 	position: relative;
 	width: 320px;
 	height: 400px;
@@ -71,7 +71,6 @@
 
 #playlist-wrapper{
 	width: 320px;
-/* 	height: 400px; */
 border: 1px solid black;
 }
 
@@ -121,3 +120,4 @@ h3 {
 	color: rgba(0,162,255,0.7);
 		
 }
+*/
