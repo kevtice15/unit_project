@@ -39,20 +39,21 @@ $(document).ready(function(){
 		});
 	};
 	
+
 	
 	/*********************************
-		Invdividual player controls
+			Room player controls
 	**********************************/
 
 	//play video
 	$('#play').click(function() {
-		player.playVideo();
-		// playPauseToggle(parseState(1));
+		// player.playVideo();
+		playPauseToggle(parseState(1));
 	});
 	//pause video
 	$('#pause').click(function() {
-		player.pauseVideo();
-		// playPauseToggle(parseState(2));
+		// player.pauseVideo();
+		playPauseToggle(parseState(2));
 	});
 	
 	//play next video
@@ -60,23 +61,26 @@ $(document).ready(function(){
 
 		if(playlist[currentVideoIndex+1]){
 			currentVideoIndex++;
-			player.loadVideoById(playlist[currentVideoIndex], 0, 'medium');
+			updateVideo(currentVideoIndex);
 		}
 	
-	// play previous video
+	});
+
+	//play previous video
 	$('#previous').click(function() {
+
 		if(playlist[currentVideoIndex-1]){
 			currentVideoIndex--;
-			player.loadVideoById(playlist[currentVideoIndex], 0, 'medium');
+			updateVideo(currentVideoIndex);
 		}
+	
 	});
 
-
-	});
 	//stop video and clear
 	$('#stop').click(function() {
-		player.stopVideo();
-		player.clearVideo();
+		// player.stopVideo();
+		// player.clearVideo();
+		stopVideo();
 	});
 	//mute audio
 	var mute = false;
@@ -122,8 +126,28 @@ $(document).ready(function(){
 	var done = false;
 	
 	function onPlayerStateChange(e) {
+		// //socket emit the event
+		// videoEvent({
+
+		// 	state: parseState(e.data),
+
+		state = e.data;
+
+		console.log(parseState(state));
 
 		$('#currentState').html(parseState(e.data));
+
+		// });
+		// if (e.data === 1 || e.data === 2){
+		// 	playPauseToggle(parseState(e.data));
+		// }
+
+		// if (e.data === 1 || e.data === 2){
+		// 	playPauseToggle(parseState(e.data), currentTime);
+		// }
+
+		// console.log('event: ' + e.data);
+		// console.log(parseState(e.data));
 	}
 
 	//update the DOM

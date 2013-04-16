@@ -2,11 +2,11 @@ var socket = io.connect();
  
 
 socket.on("status", function(data) {
-    if (data.success) {
-      console.log("Message successfully sent");
-    } else {
-      console.log("Message failed to send");
-    }
+	if (data.success) {
+	  console.log("Message successfully sent");
+	} else {
+	  console.log("Message failed to send");
+	}
 });
 
 // on connection to server, ask for user's name with an anonymous callback
@@ -37,22 +37,28 @@ function switchRoom(room){
 	socket.emit('switchRoom', room);
 }
 
-
-//Will want to make this so that it is a video for just the room
-
 function addVideo(id){
 	socket.emit('videoAdded', {body: id });
 }
 
-function nextVideo(videoToPlay){
-	socket.emit('next', videoToPlay);
+socket.on("newVideo", function(data) {
+   $("#playlist").append($("<li>").html(data.body));
+   playlist.push(data.body);
+   if(currentVideoId === null){
+		player.cueVideoById(data.body);
+		currentVideoId = data.body;
+		currentVideoIndex = 0;
+   }
+});
+
+function updateVideo(videoToPlay){
+	socket.emit('updateVideo', videoToPlay);
 }
 
 socket.on('updateVideo', function(video){
 	player.loadVideoById(playlist[video], 0, 'medium');
 	console.log("should be playing next song " + video);
 });
-
 
 function playPauseToggle(e){
 	socket.emit('playPause', e);
@@ -68,7 +74,14 @@ socket.on('update', function(e){
 	}
 });
 
+function stopVideo(){
+	socket.emit('stop');
+}
 
+socket.on('stopVideo', function(){
+	player.stopVideo();
+	player.clearVideo();
+});
 
 // function playPauseToggle(e, currentTime){
 // 	socket.emit('playPause', {e: e, time: currentTime});
@@ -88,18 +101,3 @@ socket.on('update', function(e){
 // 		player.pauseVideo();
 // 	}
 // });
-
-
-
-
-socket.on("newVideo", function(data) {
-   $("#playlist").append($("<li>").html(data.body));
-   // playlistIds.push(data.body)
-   // player.playerVars['playlist'].push(data.body);
-   playlist.push(data.body);
-   if(currentVideoId === null){
-   		player.cueVideoById(data.body);
-   		currentVideoId = data.body;
-   		currentVideoinext = 0;
-   }
-});

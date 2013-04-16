@@ -113,24 +113,26 @@ io.sockets.on("connection", function(socket) {
 
 	socket.on('videoAdded', function(data){
 		socket.emit('status', {success: 'true'});
-		io.sockets.emit('newVideo', { body: data.body });
+		io.sockets.in('room1').emit('newVideo', { body: data.body });
 		roomState.playlist.push(data.body);
 		console.log("Current playlist on server: " + roomState.playlist);
 	});
 
-	socket.on('next', function(video){
+	socket.on('updateVideo', function(video){
 		socket.emit('status', {success: 'true'});
-		socket.broadcast.to('room1').emit('updateVideo', video);
+		// socket.broadcast.to('room1').emit('updateVideo', video);
+		io.sockets.in('room1').emit('updateVideo', video);
 	});
-
-	// socket.on('playPause', function(e){
-	// 	console.log("server received playpause: " +  e);
-	// 	socket.broadcast.to('room1').emit('update', e);
-	// });
 
 	socket.on('playPause', function(data){
 		console.log("server received playpause: " +  data);
-		socket.broadcast.to('room1').emit('update', data);
+		// socket.broadcast.to('room1').emit('update', data);
+		io.sockets.in('room1').emit('update', data);
+	});
+
+	socket.on('stop', function(){
+		console.log("server received stop");
+		io.sockets.in('room1').emit('stopVideo')
 	});
 
 
