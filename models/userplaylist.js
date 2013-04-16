@@ -1,11 +1,8 @@
 var mongoose = require('mongoose');
 
 var UserPlaylist = new mongoose.Schema({
-	videos: [Video],
-	creator: mongoose.Schema.ObjectId,
-	shared: Boolean,
-	name: String,
-	dj: mongoose.Schema.ObjectId
+	user_id: mongoose.Schema.ObjectId,
+	playlist_id: mongoose.Schema.ObjectId
 });
 
 mongoose.model("UserPlaylist", UserPlaylist);
