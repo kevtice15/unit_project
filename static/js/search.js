@@ -1,6 +1,7 @@
 // Once the api loads call enable the search box.
 function handleAPILoaded() {
   $('#search-button').attr('disabled', false);
+  // videoApp.setup();
 }
 
 
@@ -41,6 +42,8 @@ function search() {
 	$('.video-result-wrapper').click(function(){
 		var id = $(this).data('id');
 		console.log(id);
+    // videoApp.updatePlaylist(id);
+
 		addVideo(id);
 		
 		//update dom correclty later

@@ -9,11 +9,6 @@ socket.on("status", function(data) {
     }
 });
 
-socket.on("newVideo", function(data) {
-   $("#playlist").append($("<li>").html(data.body));
-   playlistIds.push(data.body)
-});
-
 // on connection to server, ask for user's name with an anonymous callback
 socket.on('connect', function(){
 	// call the server-side function 'adduser' and send one parameter (value of prompt)
@@ -54,6 +49,57 @@ function nextVideo(videoToPlay){
 }
 
 socket.on('updateVideo', function(video){
-	player.loadVideoById(playlistIds[video], 0, 'medium');
+	player.loadVideoById(playlist[video], 0, 'medium');
 	console.log("should be playing next song " + video);
+});
+
+
+function playPauseToggle(e){
+	socket.emit('playPause', e);
+	console.log("client emit statechage: " +  e);
+
+}
+
+socket.on('update', function(e){
+	if(e === 'playing'){
+		player.playVideo();
+	}else if(e === 'paused'){
+		player.pauseVideo();
+	}
+});
+
+
+
+// function playPauseToggle(e, currentTime){
+// 	socket.emit('playPause', {e: e, time: currentTime});
+// 	console.log("client emit statechage: " +  e);
+
+// }
+
+// socket.on('update', function(e){
+// 	if(e === 'playing'){
+// 		if(Math.abs(currentTime-e.time)){
+// 			player.playVideo();
+// 		}else{
+// 			player.seekTo(e.time, false);
+// 		}
+		
+// 	}else if(e === 'paused'){
+// 		player.pauseVideo();
+// 	}
+// });
+
+
+
+
+socket.on("newVideo", function(data) {
+   $("#playlist").append($("<li>").html(data.body));
+   // playlistIds.push(data.body)
+   // player.playerVars['playlist'].push(data.body);
+   playlist.push(data.body);
+   if(currentVideoId === null){
+   		player.cueVideoById(data.body);
+   		currentVideoId = data.body;
+   		currentVideoinext = 0;
+   }
 });

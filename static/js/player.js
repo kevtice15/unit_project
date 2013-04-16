@@ -1,13 +1,14 @@
-var playlistIds = [];
+// var playlistIds = [];
 var player;
+var room;
+var state;
+var currentVideoId = null;
+var currentVideoIndex;
+var currentTime;
+var playlist = [];
+
+
 $(document).ready(function(){
-
-		
-	//DO SOMETHING BETTER THAN THIS LIKE HAVE AN OBJECT WITH WHAT IS PLAYING AND ALL ITS 
-	//IMPORTANT INFO
-	var currentlyPlaying = -1;
-
-
 
 	function createVideo(id){
 		$('#ytplayer').attr('class', 'video-frame');
@@ -18,7 +19,7 @@ $(document).ready(function(){
 	}
 
 	//Will want to put a add videos thing to the empty video or a create group thing
-	createVideo(playlistIds[1]);
+	createVideo(playlist[0]);
 	
 	// Add the API 
 	var tag = document.createElement('script');
@@ -35,8 +36,8 @@ $(document).ready(function(){
 		        'onReady': onPlayerReady,
 		        'onStateChange': onPlayerStateChange
 		    }
-		}); 	    
-	}
+		});
+	};
 	
 	// controls
 	//play video
@@ -50,15 +51,18 @@ $(document).ready(function(){
 	//play new video from time
 	var time = 10;
 	$('#p-seek').click(function() {
-		player.loadVideoById(playlistIds[0], time, 'medium');
+		// player.loadVideoById(playlistIds[0], time, 'medium');
+		
+		// player.loadVideoById(playlist[]);
 	});
 	//play next video
 	$('#next').click(function() {
-		player.loadVideoById(playlistIds[++currentlyPlaying], 20, 'medium');
-		console.log(currentlyPlaying);
+		player.loadVideoById(playlist[++currentVideoIndex], 0, 'medium');
+		// console.log(currentlyPlaying);
+		// player.nextVideo();
 
 		//REDO THIS...this currently to test whether I can sync playing next video
-		nextVideo(currentlyPlaying);
+		nextVideo(currentVideoIndex);
 
 
 	});
@@ -86,6 +90,7 @@ $(document).ready(function(){
 	    setInterval(function(){
 	    	//video time
 	    	updateDom('#time', player.getCurrentTime());
+	    	currentTime = player.getCurrentTime();
 	    	//percentage of video loaded
 	    	updateDom('#loaded', Math.round(player.getVideoLoadedFraction() * 100) / 100);
 	    	//state of the player
@@ -105,16 +110,30 @@ $(document).ready(function(){
 	
 /*
 	The API calls this function when the player's state changes.
-	The function indicates that when playing a video (state=1),
-	the player should play for six seconds and then stop.
+
 */
 	var done = false;
 	
-	function onPlayerStateChange(event) {
-	/*e.g. if (event.data == YT.PlayerState.PLAYING && !done) {
-	          setTimeout(stopVideo, 6000);
-	          done = true;
-	        }*/
+	function onPlayerStateChange(e) {
+		// //socket emit the event
+		// videoEvent({
+
+		// 	state: parseState(e.data),
+
+		state = e.data;
+
+		console.log(parseState(state));
+		// });
+		if (e.data === 1 || e.data === 2){
+			playPauseToggle(parseState(e.data));
+		}
+
+		// if (e.data === 1 || e.data === 2){
+		// 	playPauseToggle(parseState(e.data), currentTime);
+		// }
+
+		// console.log('event: ' + e.data);
+		// console.log(parseState(e.data));
 	}
 
 	//update the DOM
@@ -135,7 +154,7 @@ $(document).ready(function(){
 			return 'paused';
 		} else if (state === 3) {
 			return 'buffering';
-		} else if (state === 4) {
+		} else if (state === 5) {
 			return 'video cued';
 		}		
 	}

@@ -68,6 +68,14 @@ var usernames = {};
 // rooms which are currently available in chat
 var rooms = ['room1','room2','room3'];
 
+var roomState = {
+	'state': "",
+	'playlist': [],
+	'currentVideoId': "",
+	'currentVideoIndex': "",
+	'currentVideoTime': ""
+};
+
 
 io.sockets.on("connection", function(socket) {
 
@@ -104,13 +112,26 @@ io.sockets.on("connection", function(socket) {
 
 
 	socket.on('videoAdded', function(data){
-		socket.emit('status', {success: 'true'})
+		socket.emit('status', {success: 'true'});
 		io.sockets.emit('newVideo', { body: data.body });
+		roomState.playlist.push(data.body);
+		console.log("Current playlist on server: " + roomState.playlist);
 	});
 
 	socket.on('next', function(video){
-		socket.emit('status', {success: 'true'})
+		socket.emit('status', {success: 'true'});
 		socket.broadcast.to('room1').emit('updateVideo', video);
 	});
+
+	// socket.on('playPause', function(e){
+	// 	console.log("server received playpause: " +  e);
+	// 	socket.broadcast.to('room1').emit('update', e);
+	// });
+
+	socket.on('playPause', function(data){
+		console.log("server received playpause: " +  data);
+		socket.broadcast.to('room1').emit('update', data);
+	});
+
 
 });
