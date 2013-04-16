@@ -2,9 +2,12 @@
 		Express Server
 ===========================*/
 
-var express = require('express'),
+var express = require('express.io'),
 	// videos = require('./videos/videos.js');
 	app = express();
+
+app.http().io().set('log level', 1);
+
 
 app.use(express.logger('dev'));
 app.use(express.bodyParser());
@@ -58,7 +61,7 @@ console.log('Express listening on port 8889');
 /*===========================
 		Socket Server
 ===========================*/
-var io = require('socket.io').listen(server);
+//var io = require('socket.io').listen(server);
 
 
 
@@ -69,16 +72,22 @@ var usernames = {};
 var rooms = ['room1','room2','room3'];
 
 
-io.sockets.on("connection", function(socket) {
+app.io.sockets.on("connection", function(socket) {
 
 	// when the client emits 'adduser', this listens and executes
 	socket.on('adduser', function(username){
 		// store the username in the socket session for this client
+		// CREATE NEW USER IN DB
 		socket.username = username;
+		
 		// store the room name in the socket session for this client
+		// CREATE NEW ROOM IN DB
+		// SET USERS ROOM TO THAT ROOM
 		socket.room = 'room1';
 		// add the client's username to the global list
 		usernames[username] = username;
+
+		// SET USERS ROOM TO THAT ROOM
 		// send client to room 1
 		socket.join('room1');
 		// echo to client they've connected
@@ -105,7 +114,7 @@ io.sockets.on("connection", function(socket) {
 
 	socket.on('videoAdded', function(data){
 		socket.emit('status', {success: 'true'})
-		io.sockets.emit('newVideo', { body: data.body });
+		app.io.sockets.emit('newVideo', { body: data.body });
 	});
 
 	socket.on('next', function(video){

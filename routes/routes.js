@@ -12,6 +12,31 @@ module.exports = function(app){
 	// });
 
 	//User routes
+	
+	/*
+	app.io.route('/users:create', function(request){
+		console.log("****************************");
+		users.create(request);
+	});
+	*/
+	app.io.route('users', {
+    create: function(req) {
+      // create your customer
+      users.create(req);
+    },
+    retrieve: function(req){
+      users.retrieve(req);
+    },
+    update: function(req) {
+      // update your customer
+      users.update(req);
+    },
+    remove: function(req) {
+      // remove your customer
+      users.del(req);
+    }
+  });
+
 	app.post('/users', function(request, response){
 		users.create(request, response);
 	});

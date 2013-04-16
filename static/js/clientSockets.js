@@ -11,13 +11,16 @@ socket.on("status", function(data) {
 
 socket.on("newVideo", function(data) {
    $("#playlist").append($("<li>").html(data.body));
-   playlistIds.push(data.body)
+   playlistIds.push(data.body);
 });
 
 // on connection to server, ask for user's name with an anonymous callback
 socket.on('connect', function(){
 	// call the server-side function 'adduser' and send one parameter (value of prompt)
-	socket.emit('adduser', prompt("What's your name?"));
+	//socket.emit('adduser', prompt("What's your name?"));
+	console.log('About to emit ************');
+	socket.emit('users:create', {body:{name: prompt("What's your name?")}});
+	console.log('Emitted!!!! ************');
 });
 
 // listener, whenever the server emits 'updatechat', this updates the chat body
