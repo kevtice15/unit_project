@@ -60,19 +60,39 @@ socket.on('updateVideo', function(video){
 	console.log("should be playing next song " + video);
 });
 
-function playPauseToggle(e){
-	socket.emit('playPause', e);
-	console.log("client emit statechage: " +  e);
+function playPauseToggle(state, time){
+	socket.emit('playPause', {state: state, time: time});
+	console.log("client emit statechage: " +  state + " at " + time);
 
 }
 
-socket.on('update', function(e){
-	if(e === 'playing'){
+// function playPauseToggle(e){
+// 	socket.emit('playPause', e);
+// 	console.log("client emit statechage: " +  e);
+
+// }
+
+
+socket.on('update', function(data){
+	if(data.state === 'playing'){
 		player.playVideo();
-	}else if(e === 'paused'){
+		// player.seekTo(data.time, false);
+	}else if(data.state === 'paused'){
+		player.seekTo(data.time, false);
 		player.pauseVideo();
+		
 	}
 });
+
+// socket.on('update', function(e){
+// 	if(e === 'playing'){
+// 		player.playVideo();
+// 	}else if(e === 'paused'){
+// 		player.pauseVideo();
+// 	}
+// });
+
+
 
 function stopVideo(){
 	socket.emit('stop');

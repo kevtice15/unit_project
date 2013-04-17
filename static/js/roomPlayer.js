@@ -47,13 +47,13 @@ $(document).ready(function(){
 
 	//play video
 	$('#play').click(function() {
-		// player.playVideo();
-		playPauseToggle(parseState(1));
+		// playPauseToggle(parseState(1));
+		playPauseToggle(parseState(1), player.getCurrentTime());
 	});
 	//pause video
 	$('#pause').click(function() {
-		// player.pauseVideo();
-		playPauseToggle(parseState(2));
+		// playPauseToggle(parseState(2));
+		playPauseToggle(parseState(2), player.getCurrentTime());
 	});
 	
 	//play next video
@@ -133,7 +133,7 @@ $(document).ready(function(){
 
 		state = e.data;
 
-		console.log(parseState(state));
+		// console.log(parseState(state));
 
 		$('#currentState').html(parseState(e.data));
 
