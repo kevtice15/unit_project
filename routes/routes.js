@@ -20,33 +20,42 @@ module.exports = function(app){
 	});
 	*/
 app.io.route('users', {
-    create: function(req, res) {
-    routesLog('users', res);
+    create: function(req) {
+			console.log("THE ROUTE GETS CALLED ");
       users.create(req);
+      //return res;
     },
     retrieve: function(req, res){
-      users.retrieve(req);
+      users.retrieve(req, res);
+      return res;
     },
     update: function(req, res) {
-      users.update(req);
+      users.update(req, res);
+      return res;
     },
     remove: function(req, res) {
-      users.del(req);
+      users.del(req, res);
+      return res;
     }
 });
 
 app.io.route('rooms', {
     create: function(req, res) {
+    	console.log("THE ROUTE GETS CALLED ROOM");
       rooms.create(req);
+      return res;
     },
     retrieve: function(req, res){
       rooms.retrieve(req);
+      return res;
     },
     update: function(req, res) {
       rooms.update(req);
+      return res;
     },
     remove: function(req, res) {
       rooms.del(req);
+      return res;
     }
 });
 
@@ -111,7 +120,7 @@ app.io.route('rooms', {
 	app.del('/playlists/:id', function(request, response){
 		playlists.del(request, response);
 	});
-}
+};
 
 function routesLog(type, log){
 	console.log("[Routes]-[", type, "] - ", log);

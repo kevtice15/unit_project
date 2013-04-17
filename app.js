@@ -4,13 +4,91 @@
 
 var express = require('express.io'),
 	// videos = require('./videos/videos.js');
-	app = express();
+	app = express(),
+	passport = require('passport'),
+	GoogleStrategy = require('passport-google-oauth').OAuth2Strategy,
+	MemoryStore = express.session.MemoryStore,
+	sessionStore = new MemoryStore(),
+	passportSocketIo = require('passport.socketio');
+
+var GOOGLE_CLIENT_ID = "846887029586.apps.googleusercontent.com";
+var GOOGLE_CLIENT_SECRET = "PzU_-cecGvD5VMhkiOTDIvvX";
+
+// Passport session setup.
+//   To support persistent login sessions, Passport needs to be able to
+//   serialize users into and deserialize users out of the session.  Typically,
+//   this will be as simple as storing the user ID when serializing, and finding
+//   the user by ID when deserializing.  However, since this example does not
+//   have a database of user records, the complete Google profile is
+//   serialized and deserialized.
+passport.serializeUser(function(user, done) {
+  done(null, user);
+});
+
+passport.deserializeUser(function(obj, done) {
+  done(null, obj);
+});
+
+// Use the GoogleStrategy within Passport.
+//   Strategies in Passport require a `verify` function, which accept
+//   credentials (in this case, an accessToken, refreshToken, and Google
+//   profile), and invoke a callback with a user object.
+passport.use(new GoogleStrategy({
+    clientID: GOOGLE_CLIENT_ID,
+    clientSecret: GOOGLE_CLIENT_SECRET,
+    callbackURL: "http://127.0.0.1:8889/auth/google/callback"
+  },
+  function(accessToken, refreshToken, profile, done) {
+    // asynchronous verification, for effect...
+    process.nextTick(function () {
+      console.log("Google Profile:", profile);
+
+      // To keep the example simple, the user's Google profile is returned to
+      // represent the logged-in user.  In a typical application, you would want
+      // to associate the Google account with a user record in your database,
+      // and return that user instead.
+      return done(null, profile._json);
+    });
+  }
+));
 
 app.http().io().set('log level', 1);
 
 
-app.use(express.logger('dev'));
-app.use(express.bodyParser());
+app.configure(function() {
+  app.set('views', __dirname + '/views');
+  app.set('view engine', 'ejs');
+  app.use(express.logger());
+  app.use(express.cookieParser());
+  app.use(express.bodyParser());
+  app.use(express.methodOverride());
+  app.use(express.session({ store:sessionStore, secret:'secret', key:'express.sid'}));
+  // Initialize Passport!  Also use passport.session() middleware, to support
+  // persistent login sessions (recommended).
+  app.use(passport.initialize());
+  app.use(passport.session());
+  app.use(app.router);
+  app.use(express.static(__dirname + '/public'));
+  app.io.set("authorization", passportSocketIo.authorize({
+    key:    'express.sid',       //the cookie where express (or connect) stores its session id.
+    secret: 'secret', //the session secret to parse the cookie
+    store:   sessionStore,     //the session store that express uses
+    fail: function(data, accept) {
+        // console.log("failed");
+        // console.log(data);// *optional* callbacks on success or fail
+        accept(null, false);             // second param takes boolean on whether or not to allow handshake
+    },
+    success: function(data, accept) {
+      //  console.log("success socket.io auth");
+     //   console.log(data);
+        accept(null, true);
+    }
+	}));
+});
+
+
+
+
 
 
 app.get("/static/:filename", function(request, response){
@@ -25,6 +103,59 @@ app.get("/static/css/:filename", function(request, response){
 	response.sendfile("static/css/" + request.params.filename);
 });
 
+app.get('/', function(req, res){
+  res.render('index', { user: req.user });
+});
+
+app.get('/account', ensureAuthenticated, function(req, res){
+  res.render('account', { user: req.user });
+});
+
+app.get('/login', function(req, res){
+  res.sendfile('static/login.html');
+});
+
+// GET /auth/google
+//   Use passport.authenticate() as route middleware to authenticate the
+//   request.  The first step in Google authentication will involve
+//   redirecting the user to google.com.  After authorization, Google
+//   will redirect the user back to this application at /auth/google/callback
+app.get('/auth/google',
+  passport.authenticate('google', { scope: ['https://www.googleapis.com/auth/userinfo.profile',
+                                            'https://www.googleapis.com/auth/userinfo.email'] }),
+  function(req, res){
+    // The request will be redirected to Google for authentication, so this
+    // function will not be called.
+});
+
+// GET /auth/google/callback
+//   Use passport.authenticate() as route middleware to authenticate the
+//   request.  If authentication fails, the user will be redirected back to the
+//   login page.  Otherwise, the primary route function function will be called,
+//   which, in this example, will redirect the user to the home page.
+app.get('/auth/google/callback',
+  passport.authenticate('google', { failureRedirect: '/static/login.html' }),
+  function(req, res) {
+    res.redirect('/static/index.html');
+});
+
+app.get('/logout', function(req, res){
+  req.logout();
+  res.redirect('/');
+});
+
+
+// Simple route middleware to ensure user is authenticated.
+//   Use this route middleware on any resource that needs to be protected.  If
+//   the request is authenticated (typically via a persistent login session),
+//   the request will proceed.  Otherwise, the user will be redirected to the
+//   login page.
+function ensureAuthenticated(req, res, next) {
+  if (req.isAuthenticated()) { return next(); }
+  res.redirect('/login');
+}
+
+
 // app.get('/videos', videos.findAll);
 // app.get('/videos/:id', videos.findById);
 // app.post('/videos', videos.addVideo);
@@ -37,9 +168,9 @@ mongoose.connect('mongodb://localhost/test');
 var db = mongoose.connection;
 
 //Require our data models
-var User = require('./models/user');
-var Playlist = require('./models/playlist');
-var Room = require('./models/room');
+require('./models/user.js');
+require('./models/playlist.js');
+require('./models/room.js');
 
 //Require our routes 
 require("./routes/routes.js")(app);
@@ -75,22 +206,31 @@ var rooms = ['room1','room2','room3'];
 app.io.sockets.on("connection", function(socket) {
 
 	// when the client emits 'adduser', this listens and executes
-	socket.on('adduser', function(nameandroom){
+	socket.on('adduser', function(){
+		var nameandroom = {name: "roomname", room: "room"};
 		// store the username in the socket session for this client
 		// CREATE NEW USER IN DB
+		var newUser = socket.handshake.user;
+		console.log("*************HEY LOOKADAT USER***********", socket.handshake.user);
+		socket.emit('users:create', {body: {_id: newUser.id, name: newUser.givenName}});
+		socketEventLog("users:create");
+		/*
+		var newUser = mongoose.model("User");
+		var newRoom = mongoose.model("Room");
 		console.log("I GET HERE");
 		socket.emit('users:create', {body:{name: nameandroom.name}});
+		socketEventLog("users:create");
 		console.log("I GET HERE 2");
 		socket.username = nameandroom.name;
-		
+		*/
 		socket.emit('rooms:create', {body:{name: nameandroom.room}});
+		socketEventLog("rooms:create");
+		/*
 		console.log("********Socket Log*********", socket);
 		// store the room name in the socket session for this client
 		// CREATE NEW ROOM IN DB
 		// SET USERS ROOM TO THAT ROOM
-		console.log("User", User);
-		var justAddedUser = User.findOne({ 'name': 'nameandroom.name' });
-		//justAddedUser.
+		//////////////socket.emit('user:update', {body: {"id": , "room_id": }});
 		socket.room = 'room1';
 		// add the client's username to the global list
 		usernames[nameandroom.name] = nameandroom.name;
@@ -101,8 +241,10 @@ app.io.sockets.on("connection", function(socket) {
 		// echo to client they've connected
 		socket.emit('updatechat', 'you have connected to room1');
 		// echo to room 1 that a person has connected to their room
-		socket.broadcast.to('room1').emit('updatechat', username + ' has connected to this room');
+		socket.broadcast.to('room1').emit('updatechat', nameandroom.name + ' has connected to this room');
 		socket.emit('updaterooms', rooms, 'room1');
+		console.log("HEY HERES THE END OF THE ADD USER EVENT");
+		*/
 	});
 
 	socket.on('addRoom', function(roomname){
@@ -135,3 +277,7 @@ app.io.sockets.on("connection", function(socket) {
 	});
 
 });
+
+function socketEventLog(log){
+	console.log("[Socket emit] - ", log);
+}
