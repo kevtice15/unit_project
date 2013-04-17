@@ -125,10 +125,16 @@ io.sockets.on("connection", function(socket) {
 	});
 
 	socket.on('playPause', function(data){
-		console.log("server received playpause: " +  data);
+		console.log("server received playpause: " +  data.state + " at " + data.time);
 		// socket.broadcast.to('room1').emit('update', data);
-		io.sockets.in('room1').emit('update', data);
+		io.sockets.in('room1').emit('update', {state: data.state, time: data.time});
 	});
+
+	// socket.on('playPause', function(data){
+	// 	console.log("server received playpause: " +  data);
+	// 	// socket.broadcast.to('room1').emit('update', data);
+	// 	io.sockets.in('room1').emit('update', data);
+	// });
 
 	socket.on('stop', function(){
 		console.log("server received stop");
