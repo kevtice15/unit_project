@@ -2,15 +2,15 @@ var mongoose = require('mongoose');
 
 exports.create = function(request, response){
 	var Resource = mongoose.model('User');
-	console.log("*******************************",request);
+	//console.log("*******************************",request);
 	var fields = request.data.body;
 
 	var r = new Resource(fields);
 	r.save(function(err, Resource){
 		if(err){
-			//response.send(500, {error: err});
+			response.send(500, {error: err});
 		}
-		//response.send(Resource);
+		response.send(Resource);
 	});
 };
 

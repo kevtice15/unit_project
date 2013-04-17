@@ -19,23 +19,36 @@ module.exports = function(app){
 		users.create(request);
 	});
 	*/
-	app.io.route('users', {
-    create: function(req) {
-      // create your customer
+app.io.route('users', {
+    create: function(req, res) {
+    routesLog('users', res);
       users.create(req);
     },
-    retrieve: function(req){
+    retrieve: function(req, res){
       users.retrieve(req);
     },
-    update: function(req) {
-      // update your customer
+    update: function(req, res) {
       users.update(req);
     },
-    remove: function(req) {
-      // remove your customer
+    remove: function(req, res) {
       users.del(req);
     }
-  });
+});
+
+app.io.route('rooms', {
+    create: function(req, res) {
+      rooms.create(req);
+    },
+    retrieve: function(req, res){
+      rooms.retrieve(req);
+    },
+    update: function(req, res) {
+      rooms.update(req);
+    },
+    remove: function(req, res) {
+      rooms.del(req);
+    }
+});
 
 	app.post('/users', function(request, response){
 		users.create(request, response);
@@ -99,3 +112,8 @@ module.exports = function(app){
 		playlists.del(request, response);
 	});
 }
+
+function routesLog(type, log){
+	console.log("[Routes]-[", type, "] - ", log);
+}
+

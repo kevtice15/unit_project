@@ -19,7 +19,8 @@ socket.on('connect', function(){
 	// call the server-side function 'adduser' and send one parameter (value of prompt)
 	//socket.emit('adduser', prompt("What's your name?"));
 	console.log('About to emit ************');
-	socket.emit('users:create', {body:{name: prompt("What's your name?")}});
+	socket.emit('adduser', {name: prompt("What's your name?"), room: prompt("Name the room")});
+	
 	console.log('Emitted!!!! ************');
 });
 

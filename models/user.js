@@ -6,3 +6,7 @@ var User = new mongoose.Schema({
 });
 
 mongoose.model("User", User);
+
+User.methods.addRoomId = function (roomId){
+	this.room_id = roomId;
+}
