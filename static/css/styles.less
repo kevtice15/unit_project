@@ -7,12 +7,14 @@
 @screenWidth: 320px;
 @screenHeight: 400px;
 @playerHeight: 180px;
+@bottomButtonHeight: 60px;
  
 /* margins */
 @buttonMarginTop: 5px;
 
 /* borders */
 @thinBorder: 1px solid black;
+@thickBorder: 2px solid black;
 
 /* fonts */
 @buttonFont: 'Noto Sans', sans-serif;
@@ -20,12 +22,78 @@
 @textWeight: 400;
 @buttonFontSize: 15px;
 
+/*Border box*/
+.box-sizing (@type: border-box) {
+	-webkit-box-sizing: @type;
+	-moz-box-sizing:    @type;
+	box-sizing:         @type;
+}
+
+
+/*======================
+	Outer Container
+======================*/
+#test-container {
+	width: (@screenWidth * 3);
+	height: (@screenHeight + @bottomButtonHeight);
+	border: @thinBorder;
+	.box-sizing;
+	// overflow: hidden;
+}
+
+/*======================
+	Three screens 
+======================*/
+#login-screen {
+	position: relative;
+	width: @screenWidth;
+	height: (@screenHeight + @bottomButtonHeight);
+	display: inline;
+	.box-sizing;
+}
+
+#home-screen {
+	position: relative;
+	width: @screenWidth;
+	height: (@screenHeight + @bottomButtonHeight);
+	display: inline;
+	.box-sizing;
+}
+
+#room {
+	position: relative;
+	width: @screenWidth;
+	height: (@screenHeight + @bottomButtonHeight);
+	display: inline;
+	.box-sizing;
+}
+
+
+/*======================
+	This would be used
+	to highlight the center screen
+======================*/
+#center-box{
+	position: absolute;
+	width: @screenWidth;
+	height: @screenHeight;
+	left: @screenWidth;
+	border: @thickBorder;
+	z-index: -1;
+}
+
+
+/*======================
+Everything you already had
+======================*/
+
 #screen {
 	position: relative;
 	width: @screenWidth;
 	height: @screenHeight;
 	background-color: @backgroundColor;
 	border: @thinBorder;
+	.box-sizing;
 }
 
 #ytplayer {
@@ -66,6 +134,8 @@
 
 #searchResults {
 	position: relative;
+	width: @screenWidth;
+	height: (@screenHeight + @bottomButtonHeight);
 }
 
 .video-result-wrapper {
@@ -88,7 +158,9 @@
 
 #playlist-wrapper {
 	width: @screenWidth;
+	height: (@screenHeight + @bottomButtonHeight);;
 	border: @thinBorder;
+	.box-sizing;
 	h2 {
 		text-align: center;
 	}
