@@ -42,8 +42,10 @@ function search() {
 	$('.video-result-wrapper').click(function(){
 		var id = $(this).data('id');
 		console.log(id);
+		$(this).children('#video-result-wrapper').css({'backgroundColor': 'grey'});
+		console.log($(this).children('#video-result-wrapper'));
     // videoApp.updatePlaylist(id);
-
+    
 		addVideo(id);
 		
 		//update dom correclty later

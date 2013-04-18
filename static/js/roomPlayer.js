@@ -33,8 +33,10 @@ $(document).ready(function(){
 	  	$('#test-container').css({top: 0, left: leftValue, position: 'absolute'});
   	});
   	
+  	
+  	
   	$('#searchMenuButton').click(function() {
-	  	topValue -= 460;
+	  	topValue -= 462;
 	  	$('#test-container').css({top: topValue, left: leftValue, position: 'absolute'});
 	  	$('#playlist-wrapper').css({zIndex: 0});
 	  	$('#searchContainer').css({zIndex: 100});
@@ -45,24 +47,25 @@ $(document).ready(function(){
   	});
   	
   	$('#searchDone').click(function() {
-		topValue += 460;
+		topValue += 462;
  	  	$('#test-container').css({top: topValue, left: leftValue, position: 'absolute'}); 	
  	  	console.log("done");
   	});
   	
   	$('#playlistDone').click(function() {
-		topValue += 460;
+		topValue += 462;
  	  	$('#test-container').css({top: topValue, left: leftValue, position: 'absolute'}); 	
  	  	console.log("done");
   	});  	
   	
   	$('#playListMenuButton').click(function(){
-	  	topValue -= 460;
+	  	topValue -= 462;
 	  	$('#test-container').css({top: topValue, left: leftValue, position: 'absolute'});
 	  	$('#searchContainer').css({zIndex: 0});
 	  	$('#playlist-wrapper').css({zIndex: 100});
   	});
 
+  	
 
 	//Will want to put a add videos thing to the empty video or a create group thing
 	createVideo(playlist[0]);
