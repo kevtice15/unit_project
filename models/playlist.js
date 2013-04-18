@@ -32,7 +32,10 @@ var Video = function(youtube_id, name, votes){
 
 var Playlist = new mongoose.Schema({
 	videos: [Video],
-	creator: mongoose.Schema.ObjectId
+	creator: mongoose.Schema.ObjectId,
+	shared: Boolean,
+	name: String,
+	dj: mongoose.Schema.ObjectId
 });
 
 mongoose.model("Playlist", Playlist);
