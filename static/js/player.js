@@ -118,6 +118,7 @@ $(document).ready(function(){
 			//return quality
 			updateDom('#quality', player.getPlaybackQuality());
 		}, 10);
+		console.log(player);
 	}
 	
 /*
