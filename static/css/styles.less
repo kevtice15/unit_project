@@ -55,9 +55,10 @@
 	position: absolute;
 	top: 0px;
 	left: 0px;
-	width: @screenWidth;
+	width: (@screenWidth - 1);
 	height: (@screenHeight + @bottomButtonHeight);
 	overflow: hidden;
+	border: 1px solid black;
 }
 
 
@@ -98,7 +99,7 @@
 
 #searchMenuButton {
 	position: absolute;
-	left: -1px;
+	left: -2px;
 	top: @screenHeight;
 	display: inline-block;
 	height: @bottomButtonHeight;
@@ -106,6 +107,12 @@
 	background-color: grey;
 	margin: 0px;
 	border: 1px solid black;
+	padding: 16px;
+	font-family: @buttonFont;
+	font-weight: @buttonWeight;
+	font-size: 20;
+	color: white;
+
 }
 
 #playListMenuButton {
@@ -115,10 +122,16 @@
 	display: inline-block;
 	height: @bottomButtonHeight;
 	float: right;
-	width: (@screenWidth/2 - 2);
+	width: (@screenWidth/2 + 2);
 	background-color: grey;
 	margin: 0px;
 	border: 1px solid black;
+	padding: 16px;
+	font-family: @buttonFont;
+	font-weight: @buttonWeight;
+	font-size: 20;
+	color: white;
+	
 }
 
 /*======================
@@ -145,7 +158,6 @@ search results will
 	left: (@screenWidth * 2);
 	width: @screenWidth;
 	height: (@screenHeight + @bottomButtonHeight);
-	border: @thinBorder;
 	background-color: white;
 }
 
@@ -163,8 +175,7 @@ animate up and down
 #playlist-wrapper {
 	position: absolute;
 	width: @screenWidth;
-	height: (@screenHeight + @bottomButtonHeight);;
-	border: @thinBorder;
+	height: (@screenHeight + @bottomButtonHeight + 10);
 	top: (@screenHeight + @bottomButtonHeight);
 	left: (@screenWidth * 2);	
 	background-color: white;
@@ -214,6 +225,9 @@ animate up and down
 
 
 #ytplayer {
+	position: relative;
+	top: 0px;
+	left: 0px;
 	width: (@screenWidth - 1);
 	height: @playerHeight;
 }
@@ -321,7 +335,9 @@ h2 {
 	font-family: @buttonFont;
 }
 
-
+a {
+	text-decoration: none;
+}
 
 
 
