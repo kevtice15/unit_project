@@ -10,6 +10,7 @@ var playlist = [];
 
 $(document).ready(function(){
 
+
 	function createVideo(id){
 		$('#ytplayer').attr('class', 'video-frame');
 		$('#ytplayer').attr('width', 320);
@@ -17,6 +18,51 @@ $(document).ready(function(){
 		$('#ytplayer').attr('src','http://www.youtube.com/embed/' + id + '?controls=0&showinfo=0&enablejsapi=1&iv_load_policy=3&rel=0&modestbranding=1&amp');
 		$('#ytplayer').attr('frameborder', '0');
 	}
+
+
+	$('#searchContainer').css({zIndex: 100});	
+	var leftValue = 0;
+	var topValue = 0;
+	$('#login-button').click(function() {
+		leftValue -= 320;
+		$('#test-container').css({top: 0, left: leftValue, position: 'absolute'});
+  	});	
+
+  	$('#rooms').click(function() {
+  		leftValue -= 320;
+	  	$('#test-container').css({top: 0, left: leftValue, position: 'absolute'});
+  	});
+  	
+  	$('#searchMenuButton').click(function() {
+	  	topValue -= 460;
+	  	$('#test-container').css({top: topValue, left: leftValue, position: 'absolute'});
+	  	$('#playlist-wrapper').css({zIndex: 0});
+	  	$('#searchContainer').css({zIndex: 100});
+  	});
+
+  	$('#search-button').click(function() {
+	  	search($('#query').val());
+  	});
+  	
+  	$('#searchDone').click(function() {
+		topValue += 460;
+ 	  	$('#test-container').css({top: topValue, left: leftValue, position: 'absolute'}); 	
+ 	  	console.log("done");
+  	});
+  	
+  	$('#playlistDone').click(function() {
+		topValue += 460;
+ 	  	$('#test-container').css({top: topValue, left: leftValue, position: 'absolute'}); 	
+ 	  	console.log("done");
+  	});  	
+  	
+  	$('#playListMenuButton').click(function(){
+	  	topValue -= 460;
+	  	$('#test-container').css({top: topValue, left: leftValue, position: 'absolute'});
+	  	$('#searchContainer').css({zIndex: 0});
+	  	$('#playlist-wrapper').css({zIndex: 100});
+  	});
+
 
 	//Will want to put a add videos thing to the empty video or a create group thing
 	createVideo(playlist[0]);

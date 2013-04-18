@@ -9,14 +9,19 @@ var playlist = [];
 
 
 $(document).ready(function(){
+	
+	
 
 	function createVideo(id){
 		$('#ytplayer').attr('class', 'video-frame');
-		$('#ytplayer').attr('width', 320);
+/*
+		$('#ytplayer').attr('width', 319);
 		$('#ytplayer').attr('height', 200);
+*/
 		$('#ytplayer').attr('src','http://www.youtube.com/embed/' + id + '?controls=0&showinfo=0&enablejsapi=1&iv_load_policy=3&rel=0&modestbranding=1&amp');
 		$('#ytplayer').attr('frameborder', '0');
 	}
+	
 
 	//Will want to put a add videos thing to the empty video or a create group thing
 	createVideo(playlist[0]);

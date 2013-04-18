@@ -11,15 +11,19 @@
 	
 </head>
  	<body>
+<!--  	<div id="phoneContainer"> -->
  		<div id="test-container">
-			
+		 		
+	
 			<!-- <div id="center-box"></div> -->
 
 			<!--Login screen-->
 			<div id='login-screen'>
 				<h2>TesTube</h2>
 				<input id="login" value='' type="text"/>
-				<button id="login-button" onclick="login()">Login</button>		
+				<div id="buttons">
+				<a class="button" id="login-button">Login</a>		
+				</div>
 			</div>
 			
 			<div id="home-screen">
@@ -57,20 +61,25 @@
 					</div>
 					
 				</div>
-
-				<!--Buttons for Video Screen-->
-				<div id="buttons">
-			      <label> <input id="query" value='' type="text"/><button id="search-button" disabled onclick="search()">Search</button></label>
-			    </div>
-					
-
+				
+				<div id="searchMenuButton">Search</div>
+				<div id="playListMenuButton">Playlist</div>			
 			</div> <!--end room-->
 
-			
+				<div id="searchContainer">
+				
+				<div id="buttons">
+			      <label> <input id="query" value='' type="text"/>
+			      <a id="search-button">Search</a>
+			      <a id="searchDone">Done</a>
+			      </label>
+			    </div>	
 
 			<!-- handle bars template start -->				
-				<div id="searchResults">This will get replaced by handlebars.js</div>		
+				<div id="searchResults"></div>		
 					
+				<!--search box-->
+
 						
 				<script id="myTemplate" type="text/x-handlebars-template">
 					
@@ -86,7 +95,8 @@
 								
 				</script>
 				<!-- handle bars template end-->
-
+				
+				</div>
 
 
 				<!-- handle bars template start -->				
@@ -106,6 +116,9 @@
 				<!-- handle bars template end		 -->
 			
 			<div id='playlist-wrapper'>
+				<div id="buttons">
+					<a id="playlistDone">Done</a>
+				</div>
 				<div id='playlist'></div>
 			</div>
 
@@ -122,8 +135,10 @@
 			<div id="conversation"></div>
 		</div>
 
-	</div> <!--end test-container-->
-
+<!-- 	</div>  -->
+	
+	<!--end test-container -->
+</div>
 	<script src="js/clientSockets.js"></script>
 	<script type="text/javascript" src="js/roomPlayer.js"></script>
 	<script src="js/search.js"></script>
