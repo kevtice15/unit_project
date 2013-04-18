@@ -7,12 +7,14 @@
 @screenWidth: 320px;
 @screenHeight: 400px;
 @playerHeight: 180px;
+@bottomButtonHeight: 60px;
  
 /* margins */
 @buttonMarginTop: 5px;
 
 /* borders */
 @thinBorder: 1px solid black;
+@thickBorder: 2px solid black;
 
 /* fonts */
 @buttonFont: 'Noto Sans', sans-serif;
@@ -20,16 +22,199 @@
 @textWeight: 400;
 @buttonFontSize: 15px;
 
+/*Border box*/
+.box-sizing (@type: border-box) {
+	-webkit-box-sizing: @type;
+	-moz-box-sizing:    @type;
+	box-sizing:         @type;
+}
+
+
+/*======================
+	Outer Container
+======================*/
+#test-container {
+	position: absolute;
+	top:0px;
+	left:0px;
+	width: (@screenWidth * 3);
+	height: (@screenHeight + @bottomButtonHeight);
+/* 	border: @thinBorder; */
+	.box-sizing;
+	// overflow: hidden;
+	
+	-moz-transition:ease .5s;
+	-webkit-transition:ease .5s;
+	-ms-transition:ease .5s;
+	-o-transition:ease .5s;
+	transition:ease .5s;
+}
+
+/* phone container  */
+#phoneContainer {
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	width: @screenWidth;
+	height: (@screenHeight + @bottomButtonHeight);
+	overflow: hidden;
+}
+
+
+/*======================
+	Three screens 
+======================*/
+#login-screen {
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	width: @screenWidth;
+	height: (@screenHeight + @bottomButtonHeight);
+	display: inline-block;
+	.box-sizing;
+	padding: 10px;
+}
+
+#home-screen {
+	position: absolute;
+	top: 0px;
+	left: (@screenWidth);
+	width: @screenWidth;
+	height: (@screenHeight + @bottomButtonHeight);
+	display: inline-block;
+	.box-sizing;
+	padding: 10px;
+}
+
+#room {
+	position: absolute;
+	top: 0px;
+	left: (@screenWidth * 2);
+	width: @screenWidth;
+	height: (@screenHeight + @bottomButtonHeight);
+	display: inline-block;
+	.box-sizing;
+}
+
+#searchMenuButton {
+	position: absolute;
+	left: -1px;
+	top: @screenHeight;
+	display: inline-block;
+	height: @bottomButtonHeight;
+	width: (@screenWidth/2 - 1);
+	background-color: grey;
+	margin: 0px;
+	border: 1px solid black;
+}
+
+#playListMenuButton {
+	position: absolute;
+	left:(@screenWidth/2 - 1) ;
+	top: @screenHeight;
+	display: inline-block;
+	height: @bottomButtonHeight;
+	float: right;
+	width: (@screenWidth/2 - 2);
+	background-color: grey;
+	margin: 0px;
+	border: 1px solid black;
+}
+
+/*======================
+	This would be used
+	to highlight the center screen
+======================*/
+#center-box{
+	position: absolute;
+	width: @screenWidth;
+	height: @screenHeight;
+	left: @screenWidth;
+	border: @thickBorder;
+	z-index: -1;
+}
+
+/*======================
+search results will
+ animate up and down
+======================*/
+
+#searchContainer {
+	position: absolute;
+	top: (@screenHeight + @bottomButtonHeight);
+	left: (@screenWidth * 2);
+	width: @screenWidth;
+	height: (@screenHeight + @bottomButtonHeight);
+	border: @thinBorder;
+	background-color: white;
+}
+
+#searchResults {
+	position: relative;
+	top: 0px;
+	left: 0px;
+}
+
+/*======================
+playlist div will 
+animate up and down
+======================*/
+
+#playlist-wrapper {
+	position: absolute;
+	width: @screenWidth;
+	height: (@screenHeight + @bottomButtonHeight);;
+	border: @thinBorder;
+	top: (@screenHeight + @bottomButtonHeight);
+	left: (@screenWidth * 2);	
+	background-color: white;
+	.box-sizing;
+	h2 {
+		text-align: center;
+	}
+}
+
+#conversation {
+	position: absolute;
+	top: (@screenHeight + @bottomButtonHeight);
+	left: 0px;
+}
+
+
+#rooms {
+	div {
+		font-family: @buttonFont;
+		font-weight: @buttonWeight;
+		font-size: @buttonFontSize;
+		background-color: @buttonColor;
+		border: @thinBorder;
+		padding: 2px;
+		&:hover { 
+				color: white;
+				background-color: #00a2ff; 
+		}		
+	}
+}
+
+
 #screen {
 	position: relative;
+	top: 0px;
+	left: -1px;
 	width: @screenWidth;
 	height: @screenHeight;
 	background-color: @backgroundColor;
 	border: @thinBorder;
+	.box-sizing;
 }
 
+
+
+
+
+
 #ytplayer {
-	width: @screenWidth;
+	width: (@screenWidth - 1);
 	height: @playerHeight;
 }
 
@@ -64,9 +249,7 @@
 	color: @accentColor;
 }
 
-#searchResults {
-	position: relative;
-}
+
 
 .video-result-wrapper {
 	position: relative;
@@ -86,13 +269,15 @@
 	}
 }
 
-#playlist-wrapper {
-	width: @screenWidth;
-	border: @thinBorder;
-	h2 {
-		text-align: center;
-	}
+#playlistDone {
+	float: right;
 }
+
+
+
+
+
+
 
 p {
 	font-size: small;

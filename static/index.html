@@ -11,106 +11,134 @@
 	
 </head>
  	<body>
-		<div id="currentState"></div>
-		<div id="buttons">
-	      <label> <input id="query" value='' type="text"/><button id="search-button" disabled onclick="search()">Search</button></label>
-	    </div>
+<!--  	<div id="phoneContainer"> -->
+ 		<div id="test-container">
+		 		
+	
+			<!-- <div id="center-box"></div> -->
 
-	   <!--  <label> <input id="chatbody" value='' type="text"/><button id="chatform">Msg</button></label>
-
-	    <div id="messages"> </div> -->
-
-		<div id="screen">		
-			<div>
-			<iframe id="ytplayer"> </iframe>	
-			</div>
-			
-			<div id="buttons">
-				<a class="button" id="play">Play</a>
-				<a class="button" id="pause">Pause</a>
-				<a class="button" id="next">Next</a>
-				<a class="button" id="previous">Previous</a>
-				<a class="button" id="stop">Stop</a>
-				<a class="button" id="mute">Mute</a>			
-			</div>
-			
-			<div id="data">
-				<span>Time:</span><span id="time" class="d"> 0<br></span>
-				<span>Duration:</span><span id="duration" class="d"></span>	
-				<span>% Loaded:</span><span id="loaded" class="d"> 0</span>
-				<span>Player State:</span><span id="state" class="d"></span>	
-				<span>Volume:</span><span id="volume" class="d"></span>
-				<span>Mute:</span><span id="muteS" class="d"> false</span>
-				<span>Quality:</span><span id="quality" class="d"></span>
-			</div>
-			
-		</div>
-
-
-<!-- handle bars template start -->				
-		<div id="searchResults">This will get replaced by handlebars.js</div>		
-			
-				
-		<script id="myTemplate" type="text/x-handlebars-template">
-			
-			{{#each items}}
-			<div class="video-result-wrapper" data-id="{{id.videoId}}">
-				<div class="thumbnail">
-					<img src="{{snippet.thumbnails.default.url}}">
+			<!--Login screen-->
+			<div id='login-screen'>
+				<h2>TesTube</h2>
+				<input id="login" value='' type="text"/>
+				<div id="buttons">
+				<a class="button" id="login-button">Login</a>		
 				</div>
-				<h2 class="search-title"> {{snippet.title}} </h2>
-				<p class="search-id"> {{id.videoId}}</p>
-			</div>	
-			{{/each}}	
+			</div>
+			
+			<div id="home-screen">
+				<h2>ROOMS</h2>
+				<div id="rooms"></div>
+			</div>
+
+
+			<!--The Room container-->	
+			<div id="room">
+				<!--Video Screen-->
+
+				<div id="screen">		
+					<div>
+					<iframe id="ytplayer"> </iframe>	
+					</div>
+					
+					<div id="buttons">
+						<a class="button" id="play">Play</a>
+						<a class="button" id="pause">Pause</a>
+						<a class="button" id="next">Next</a>
+						<a class="button" id="previous">Previous</a>
+						<a class="button" id="stop">Stop</a>
+						<a class="button" id="mute">Mute</a>			
+					</div>
+					
+					<div id="data">
+						<span>Time:</span><span id="time" class="d"> 0<br></span>
+						<span>Duration:</span><span id="duration" class="d"></span>	
+						<span>% Loaded:</span><span id="loaded" class="d"> 0</span>
+						<span>Player State:</span><span id="state" class="d"></span>	
+						<span>Volume:</span><span id="volume" class="d"></span>
+						<span>Mute:</span><span id="mutes" class="d"> false</span>
+						<span>Quality:</span><span id="quality" class="d"></span>
+					</div>
+					
+				</div>
+				
+				<div id="searchMenuButton">Search</div>
+				<div id="playListMenuButton">Playlist</div>			
+			</div> <!--end room-->
+
+				<div id="searchContainer">
+				
+				<div id="buttons">
+			      <label> <input id="query" value='' type="text"/>
+			      <a id="search-button">Search</a>
+			      <a id="searchDone">Done</a>
+			      </label>
+			    </div>	
+
+			<!-- handle bars template start -->				
+				<div id="searchResults"></div>		
+					
+				<!--search box-->
+
 						
-		</script>
-<!-- handle bars template end		 -->
+				<script id="myTemplate" type="text/x-handlebars-template">
+					
+					{{#each items}}
+					<div class="video-result-wrapper" data-id="{{id.videoId}}">
+						<div class="thumbnail">
+							<img src="{{snippet.thumbnails.default.url}}">
+						</div>
+						<h2 class="search-title"> {{snippet.title}} </h2>
+						<p class="search-id"> {{id.videoId}}</p>
+					</div>	
+					{{/each}}	
+								
+				</script>
+				<!-- handle bars template end-->
+				
+				</div>
 
 
-
-<!-- handle bars template start -->				
-<!--
-		<div id="playlist-wrapper">This will get replaced by handlebars.js</div>		
+				<!-- handle bars template start -->				
+				<!--
+						<div id="playlist-wrapper">This will get replaced by handlebars.js</div>		
+											
+						<script id="myTemplate2" type="text/x-handlebars-template">
 							
-		<script id="myTemplate2" type="text/x-handlebars-template">
+							<div id='playlist-wrapper'>
+								<div id='playlist'></div>
+								<p>{{id}}</p>
+							</div>	
+						
+										
+						</script>
+				-->
+				<!-- handle bars template end		 -->
 			
 			<div id='playlist-wrapper'>
+				<div id="buttons">
+					<a id="playlistDone">Done</a>
+				</div>
 				<div id='playlist'></div>
-				<p>{{id}}</p>
-			</div>	
-		
-						
-		</script>
--->
-<!-- handle bars template end		 -->
+			</div>
 
-
+	<!--
+			<div id='searchResults'></div>
 			<div id='playlist-wrapper'>
+				<h2>Playlist</h2>
 				<div id='playlist'></div>
-			</div>	
-
-
-
-
-
-<!--
-		<div id='searchResults'></div>
-		<div id='playlist-wrapper'>
-			<h2>Playlist</h2>
-			<div id='playlist'></div>
+			</div>
+	-->	
+		
+		
+		<div style="float:left;width:300px;height:250px;overflow:scroll-y;padding:10px;">
+			<div id="conversation"></div>
 		</div>
--->	
 
-	<div style="float:left;width:100px;border-right:1px solid black;height:300px;padding:10px;overflow:scroll-y;">
-		<b>ROOMS</b>
-		<div id="rooms"></div>
-	</div>
-	<div style="float:left;width:300px;height:250px;overflow:scroll-y;padding:10px;">
-		<div id="conversation"></div>
-		<input id="data" style="width:200px;" />
-		<input type="button" id="datasend" value="send" />
-	</div>
-
+<!-- 	</div>  -->
+	
+	<!--end test-container -->
+</div>
 	<script src="js/clientSockets.js"></script>
 	<script type="text/javascript" src="js/roomPlayer.js"></script>
 	<script src="js/search.js"></script>
