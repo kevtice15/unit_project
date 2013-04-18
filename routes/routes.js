@@ -1,5 +1,4 @@
 //Require controllers
-
 var playlists = require('../controllers/playlists');
 var rooms = require('../controllers/rooms');
 var users = require('../controllers/users');

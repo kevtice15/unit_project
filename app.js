@@ -173,6 +173,11 @@ require('./models/user.js');
 require('./models/playlist.js');
 require('./models/room.js');
 
+//Require controllers
+var playlists = require('./controllers/playlists');
+var rooms = require('./controllers/rooms');
+var users = require('./controllers/users');
+
 //Require our routes 
 require("./routes/routes.js")(app);
 
@@ -213,7 +218,7 @@ app.io.sockets.on("connection", function(socket) {
 		// CREATE NEW USER IN DB
 		var newUser = socket.handshake.user;
 		console.log("*************HEY LOOKADAT USER***********", socket.handshake.user);
-		socket.emit('users:create', {body: {_id: newUser.id, name: newUser.givenName}});
+		users.create({data: {body: {_id: newUser.id, name: newUser.given_name}}});
 		socketEventLog("users:create");
 		/*
 		var newUser = mongoose.model("User");
@@ -226,7 +231,7 @@ app.io.sockets.on("connection", function(socket) {
 		*/
 		socket.emit('rooms:create', {body:{name: nameandroom.room}});
 		socketEventLog("rooms:create");
-		/*
+		
 		console.log("********Socket Log*********", socket);
 		// store the room name in the socket session for this client
 		// CREATE NEW ROOM IN DB
@@ -245,7 +250,7 @@ app.io.sockets.on("connection", function(socket) {
 		socket.broadcast.to('room1').emit('updatechat', nameandroom.name + ' has connected to this room');
 		socket.emit('updaterooms', rooms, 'room1');
 		console.log("HEY HERES THE END OF THE ADD USER EVENT");
-		*/
+		
 	});
 
 	socket.on('addRoom', function(roomname){
