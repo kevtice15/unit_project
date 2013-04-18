@@ -12,6 +12,53 @@ module.exports = function(app){
 	// });
 
 	//User routes
+	
+	/*
+	app.io.route('/users:create', function(request){
+		console.log("****************************");
+		users.create(request);
+	});
+	*/
+app.io.route('users', {
+    create: function(req) {
+			console.log("THE ROUTE GETS CALLED ");
+      users.create(req);
+      //return res;
+    },
+    retrieve: function(req, res){
+      users.retrieve(req, res);
+      return res;
+    },
+    update: function(req, res) {
+      users.update(req, res);
+      return res;
+    },
+    remove: function(req, res) {
+      users.del(req, res);
+      return res;
+    }
+});
+
+app.io.route('rooms', {
+    create: function(req, res) {
+    	console.log("THE ROUTE GETS CALLED ROOM");
+      rooms.create(req);
+      return res;
+    },
+    retrieve: function(req, res){
+      rooms.retrieve(req);
+      return res;
+    },
+    update: function(req, res) {
+      rooms.update(req);
+      return res;
+    },
+    remove: function(req, res) {
+      rooms.del(req);
+      return res;
+    }
+});
+
 	app.post('/users', function(request, response){
 		users.create(request, response);
 	});
@@ -73,4 +120,9 @@ module.exports = function(app){
 	app.del('/playlists/:id', function(request, response){
 		playlists.del(request, response);
 	});
+};
+
+function routesLog(type, log){
+	console.log("[Routes]-[", type, "] - ", log);
 }
+

@@ -1,5 +1,3 @@
-/**/
-
 var player;
 
 $(document).ready(function(){
