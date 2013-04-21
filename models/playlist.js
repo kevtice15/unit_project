@@ -38,4 +38,4 @@ var Playlist = new mongoose.Schema({
 	dj: mongoose.Schema.ObjectId
 });
 
-mongoose.model("Playlist", Playlist);
+module.exports = mongoose.model("Playlist", Playlist);

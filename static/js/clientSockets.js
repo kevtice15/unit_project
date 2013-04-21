@@ -13,7 +13,7 @@ socket.on("status", function(data) {
 socket.on('connect', function(){
 	// call the server-side function 'adduser' and send one parameter (value of prompt)
 	// socket.emit('adduser', prompt("What's your name?"));
-	//socket.emit('adduser');
+	socket.emit('adduser');
 	console.log("I shouldnt be doing anything");
 });
 

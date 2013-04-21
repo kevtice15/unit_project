@@ -11,4 +11,4 @@ var Room = new mongoose.Schema({
 	}
 });
 
-mongoose.model("Room", Room);
+module.exports = mongoose.model("Room", Room);

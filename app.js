@@ -14,56 +14,16 @@ var express = require('express.io'),
 var GOOGLE_CLIENT_ID = "846887029586.apps.googleusercontent.com";
 var GOOGLE_CLIENT_SECRET = "PzU_-cecGvD5VMhkiOTDIvvX";
 
-// Passport session setup.
-//   To support persistent login sessions, Passport needs to be able to
-//   serialize users into and deserialize users out of the session.  Typically,
-//   this will be as simple as storing the user ID when serializing, and finding
-//   the user by ID when deserializing.  However, since this example does not
-//   have a database of user records, the complete Google profile is
-//   serialized and deserialized.
-passport.serializeUser(function(user, done) {
-  done(null, user);
-});
-
-passport.deserializeUser(function(obj, done) {
-  done(null, obj);
-});
-
-// Use the GoogleStrategy within Passport.
-//   Strategies in Passport require a `verify` function, which accept
-//   credentials (in this case, an accessToken, refreshToken, and Google
-//   profile), and invoke a callback with a user object.
-passport.use(new GoogleStrategy({
-    clientID: GOOGLE_CLIENT_ID,
-    clientSecret: GOOGLE_CLIENT_SECRET,
-    callbackURL: "http://127.0.0.1:8889/auth/google/callback"
-  },
-  function(accessToken, refreshToken, profile, done) {
-    // asynchronous verification, for effect...
-    process.nextTick(function () {
-      //console.log("Google Profile:", profile);
-
-      // To keep the example simple, the user's Google profile is returned to
-      // represent the logged-in user.  In a typical application, you would want
-      // to associate the Google account with a user record in your database,
-      // and return that user instead.
-      handleUser(profile._json);
-      return done(null, profile._json);
-    });
-  }
-));
 
 app.http().io().set('log level', 1);
 
 
 app.configure(function() {
-  app.set('views', __dirname + '/views');
-  app.set('view engine', 'ejs');
   app.use(express.logger());
-  app.use(express.cookieParser());
   app.use(express.bodyParser());
+  app.use(express.cookieParser());
   app.use(express.methodOverride());
-  app.use(express.session({ store:sessionStore, secret:'secret', key:'express.sid'}));
+  app.use(express.session({secret:'secret'}));
   // Initialize Passport!  Also use passport.session() middleware, to support
   // persistent login sessions (recommended).
   app.use(passport.initialize());
@@ -89,10 +49,65 @@ app.configure(function() {
 	*/
 });
 
+var mongoose = require('mongoose');
+mongoose.connect('mongodb://localhost/test');
 
+var db = mongoose.connection;
 
+//Require our data models
+var User = require('./models/user.js');
+var Playlist = require('./models/playlist.js');
+var Room = require('./models/room.js');
 
+//Require controllers
+var playlists = require('./controllers/playlists');
+var rooms = require('./controllers/rooms');
+var users = require('./controllers/users');
 
+//Require our routes 
+require("./routes/routes.js")(app);
+
+// Passport session setup.
+//   To support persistent login sessions, Passport needs to be able to
+//   serialize users into and deserialize users out of the session.  Typically,
+//   this will be as simple as storing the user ID when serializing, and finding
+//   the user by ID when deserializing.  However, since this example does not
+//   have a database of user records, the complete Google profile is
+//   serialized and deserialized.
+passport.serializeUser(function(user, done) {
+	console.log("Serialize", user);
+  done(null, user.id);
+});
+
+passport.deserializeUser(function(id, done){
+	User.findById(id, function(err, id){
+		done(err, id);
+	});
+});
+
+// Use the GoogleStrategy within Passport.
+//   Strategies in Passport require a `verify` function, which accept
+//   credentials (in this case, an accessToken, refreshToken, and Google
+//   profile), and invoke a callback with a user object.
+passport.use(new GoogleStrategy({
+    clientID: GOOGLE_CLIENT_ID,
+    clientSecret: GOOGLE_CLIENT_SECRET,
+    callbackURL: "http://127.0.0.1:8889/auth/google/callback"
+  },
+  function(accessToken, refreshToken, profile, done) {
+    // asynchronous verification, for effect...
+    process.nextTick(function () {
+      //console.log("Google Profile:", profile);
+
+      // To keep the example simple, the user's Google profile is returned to
+      // represent the logged-in user.  In a typical application, you would want
+      // to associate the Google account with a user record in your database,
+      // and return that user instead.
+      handleUser(profile._json);
+      return done(null, profile._json);
+    });
+  }
+));
 
 app.get("/static/:filename", function(request, response){
 	response.sendfile("static/" + request.params.filename);
@@ -121,6 +136,14 @@ app.get('/account', ensureAuthenticated, function(req, res){
 app.get('/login', function(req, res){
   res.sendfile('static/login.html');
 });
+
+
+
+app.get('/test', function(req, res){
+	console.log(req.user);
+	res.send({success: true});
+});
+
 
 // GET /auth/google
 //   Use passport.authenticate() as route middleware to authenticate the
@@ -171,23 +194,7 @@ function ensureAuthenticated(req, res, next) {
 // app.put('/videos/:id', videos.updateVideo);
 // app.delete('/videos/:id', videos.deleteVideo);
 
-var mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/test');
 
-var db = mongoose.connection;
-
-//Require our data models
-var User = require('./models/user.js');
-var Playlist = require('./models/playlist.js');
-var Room = require('./models/room.js');
-
-//Require controllers
-var playlists = require('./controllers/playlists');
-var rooms = require('./controllers/rooms');
-var users = require('./controllers/users');
-
-//Require our routes 
-require("./routes/routes.js")(app);
 
 
 db.on('error', console.error.bind(console, 'connection error:'));
@@ -201,31 +208,22 @@ function handleUser(profile){
 	console.log("This will add a user to the db", profile);
 	//If the user is in the db, return the user
 	//var user = mongoose.model('user', UserSchema);
-	var query = User.find({'google_id': profile.id}, function(err, docs){
+	var query = User.findOne({'google_id': profile.id}, function(err, docs){
 		console.log(docs);
 		if(docs !== undefined){
-			return docs;
+			//Start a session
+			done(null, docs);
 		}
 		else{
 			var newUser = new User({google_id: profile.id, name: profile.name});
 			newUser.save(function(err){
 				if(err)
 					console.log(err);
+					done(null, false);
 			});
+			done(null, newUser);
 		}
 	});
-	/*
-	if(query !== undefined){
-		return existingUser;
-	}
-	//If not, create it in the db
-	//Return the user
-	else{
-		users.create(profile.id, profile.name);
-		existingUser = users.retrieve(profile.id);
-		return existingUser;
-	}
-	*/
 }
 
 
@@ -259,7 +257,7 @@ app.io.sockets.on("connection", function(socket) {
 		var nameandroom = {name: "roomname", room: "room"};
 		// store the username in the socket session for this client
 		// CREATE NEW USER IN DB
-		
+		console.log(socket.handshake);
 
 
 		//var newUser = socket.handshake.user;
