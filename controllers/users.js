@@ -1,9 +1,9 @@
 var mongoose = require('mongoose');
 
 exports.create = function(request, response){
-	var Resource = mongoose.model('User');
+	var Resource = mongoose.model('UserSchema');
 	console.log("THIS EVENT FIRES*******************************",request);
-	var fields = request.data.body;
+	var fields = request.body;
 
 	var r = new Resource(fields);
 	r.save(function(err, Resource){
@@ -15,7 +15,7 @@ exports.create = function(request, response){
 };
 
 exports.retrieve = function(request, response){
-	var Resource = mongoose.model('User');
+	var Resource = mongoose.model('UserSchema');
 
 	if(request.params.id !== undefined){
 		Resource.findById(request.params.id, function(err, Resource){
@@ -38,7 +38,7 @@ exports.retrieve = function(request, response){
 };
 
 exports.update = function(request, response){
-	var Resource = mongoose.model('User');
+	var Resource = mongoose.model('UserSchema');
 	var fields = request.body;
 
 	Resource.findByIdAndUpdate(request.data.body.id, {$set: fields}, function(err, Resource){
@@ -55,7 +55,7 @@ exports.update = function(request, response){
 };
 
 exports.del = function(request, response){
-	var Resource = mongoose.model('User');
+	var Resource = mongoose.model('UserSchema');
 
 	Resource.findByIdAndRemove(request.params.id, function(err, Resource){
 		if(err){

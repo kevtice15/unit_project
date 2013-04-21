@@ -177,9 +177,9 @@ mongoose.connect('mongodb://localhost/test');
 var db = mongoose.connection;
 
 //Require our data models
-require('./models/user.js');
-require('./models/playlist.js');
-require('./models/room.js');
+var User = require('./models/user.js');
+var Playlist = require('./models/playlist.js');
+var Room = require('./models/room.js');
 
 //Require controllers
 var playlists = require('./controllers/playlists');
@@ -197,6 +197,36 @@ db.once('open', function callback() {
 
 });
 	
+function handleUser(profile){
+	console.log("This will add a user to the db", profile);
+	//If the user is in the db, return the user
+	//var user = mongoose.model('user', UserSchema);
+	var query = User.find({'google_id': profile.id}, function(err, docs){
+		console.log(docs);
+		if(docs !== undefined){
+			return docs;
+		}
+		else{
+			var newUser = new User({google_id: profile.id, name: profile.name});
+			newUser.save(function(err){
+				if(err)
+					console.log(err);
+			});
+		}
+	});
+	/*
+	if(query !== undefined){
+		return existingUser;
+	}
+	//If not, create it in the db
+	//Return the user
+	else{
+		users.create(profile.id, profile.name);
+		existingUser = users.retrieve(profile.id);
+		return existingUser;
+	}
+	*/
+}
 
 
 var server = app.listen(8889);
@@ -204,13 +234,6 @@ console.log('Express listening on port 8889');
 
 
 
-function handleUser(profile){
-	console.log("This will add a user to the db", profile);
-	//If the user is in the db, return the user
-	if()
-	//If not, create it in the db
-	//Return the user
-}
 
 
 
