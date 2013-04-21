@@ -22,6 +22,11 @@ app.get("/static/css/:filename", function(request, response){
 	response.sendfile("static/css/" + request.params.filename);
 });
 
+
+
+
+
+
 // app.get('/videos', videos.findAll);
 // app.get('/videos/:id', videos.findById);
 // app.post('/videos', videos.addVideo);
@@ -51,7 +56,7 @@ db.once('open', function callback() {
 	
 
 
-var server = app.listen(8888);
+var server = app.listen(8881);
 console.log('Express listening on port 8888');
 
 
