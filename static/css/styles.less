@@ -222,8 +222,8 @@ search results will
 #searchContainer {
 	position: absolute;
 	top: (@screenHeight);
-	left: (@screenWidth * 2);
-	width: @screenWidth;
+	left: (@screenWidth/ @screenViews * 2);
+	width: @screenWidth/ @screenViews;
 	height: (@screenHeight + @bottomButtonHeight);
 	background-color: white;
 }
@@ -241,10 +241,10 @@ animate up and down
 
 #playlist-wrapper {
 	position: absolute;
-	width: @screenWidth;
-	height: (@screenHeight + @bottomButtonHeight + 10);
+	width: (@screenWidth/ @screenViews);
+	height: @screenHeight;
 	top: (@screenHeight);
-	left: (@screenWidth * 2);	
+	left: (@screenWidth / @screenViews * 2);	
 	background-color: white;
 	.box-sizing;
 	h2 {
