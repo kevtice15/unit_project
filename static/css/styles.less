@@ -1,7 +1,10 @@
 /* colors */
 @accentColor: #00a2ff;
-@backgroundColor: black;
+@backgroundColor: #202020;
+@backgroundColor2: #444444;
 @buttonColor: white; 
+     
+     
      
 /* width height */
 /*
@@ -11,8 +14,10 @@
 
 @screenWidth: 100%;
 @screenHeight: 100%;
+@screenViews: 3;
 
-@playerHeight: 180px;
+@playerHeight: 25%;
+
 @bottomButtonHeight: 60px;
  
 /* margins */
@@ -26,8 +31,13 @@
 @buttonFont: 'Noto Sans', sans-serif;
 @buttonWeight: 700; 
 @textWeight: 400;
-@buttonFontSize: 15px;
 
+@buttonFontSize: 15px;
+@buttonRoom: 1em;
+
+a {
+	text-decoration: none;
+}
 /*=====================
     general/global
 =======================*/
@@ -75,9 +85,9 @@ input {
 	position: absolute;
 	top:0px;
 	left:0px;
-	width: (@screenWidth * 3);
-	height: (@screenHeight + @bottomButtonHeight);
-	border: @thinBorder;
+	width: (@screenWidth * @screenViews);
+	height: (@screenHeight);
+/* 	border: @thinBorder; */
 	.box-sizing;
 	// overflow: hidden;	
 	-moz-transition:ease .5s;
@@ -85,6 +95,7 @@ input {
 	-ms-transition:ease .5s;
 	-o-transition:ease .5s;
 	transition:ease .5s;
+	background-color: @backgroundColor;
 }
 
 /* phone container  */
@@ -98,10 +109,10 @@ input {
 	width: (@screenWidth - 1);
 	height: (@screenHeight + @bottomButtonHeight);
 */
-	width: @screenWidth;
-	height: (@screenHeight + @bottomButtonHeight);
+	width: (@screenWidth);
+	height: (@screenHeight);
 	overflow: hidden;
-	border: 1px solid black;
+/* 	border: 1px solid black; */
 }
 
 
@@ -110,71 +121,84 @@ input {
 ======================*/
 #login-screen {
 	position: absolute;
+	padding: 1px;
 	top: 0px;
 	left: 0px;
-	width: 100%;
-	height: (@screenHeight + @bottomButtonHeight);
+	bottom: 0px;
+	right: 0px;
+	width: (@screenWidth / @screenViews);
+	height: (@screenHeight);
 	display: inline-block;
+	text-align: center;
 	.box-sizing;
-	padding: 10px;
+	padding: 1px;
+		h2 {
+			color: white;
+		}
 }
 
 #home-screen {
 	position: absolute;
 	top: 0px;
-	left: (@screenWidth);
-	width: @screenWidth;
-	height: (@screenHeight + @bottomButtonHeight);
+	left: ((@screenWidth / @screenViews));
+	width: (@screenWidth / @screenViews);
+	height: (@screenHeight);
 	display: inline-block;
+	padding: 1px;
+
 	.box-sizing;
-	padding: 10px;
+	h2 {
+		padding: 1em;
+		color: white;
+	}
+	a {
+		color: white;
+	}
 }
 
 #room {
 	position: absolute;
 	top: 0px;
-	left: (@screenWidth * 2);
-	width: @screenWidth;
-	height: (@screenHeight + @bottomButtonHeight);
+	left: ((@screenWidth / @screenViews) * 2);
+	width: (@screenWidth / @screenViews);
+	height: (@screenHeight);
 	display: inline-block;
-	.box-sizing;
+/* 	.box-sizing; */
 }
 
 #searchMenuButton {
 	position: absolute;
-	left: -2px;
-	top: @screenHeight;
-	display: inline-block;
+	left: 0px;
+	bottom: 0px;
 	height: @bottomButtonHeight;
-	width: (@screenWidth/2 - 1);
-	background-color: grey;
-	margin: 0px;
-	border: 1px solid black;
-	padding: 16px;
+	width: 50%;
 	font-family: @buttonFont;
 	font-weight: @buttonWeight;
 	font-size: 20;
+	
+	background-color: @backgroundColor;
 	color: white;
+	border: 1px solid #3c3c3c;
+	padding: 1em 0.5em 0.5em 0.5em;
 
 }
 
 #playListMenuButton {
 	position: absolute;
-	left:(@screenWidth/2 - 1) ;
-	top: @screenHeight;
-	display: inline-block;
+	right: 0px ;
+	bottom: 0px;
 	height: @bottomButtonHeight;
 	float: right;
-	width: (@screenWidth/2 + 2);
-	background-color: grey;
-	margin: 0px;
-	border: 1px solid black;
-	padding: 16px;
+	width: 50%;
 	font-family: @buttonFont;
 	font-weight: @buttonWeight;
 	font-size: 20;
-	color: white;
 	
+	
+	background-color: @backgroundColor;
+	color: white;
+	border: 1px solid #3c3c3c;
+	padding: 1em 0.5em 0.5em 0.5em;
 }
 
 /*======================
@@ -197,7 +221,7 @@ search results will
 
 #searchContainer {
 	position: absolute;
-	top: (@screenHeight + @bottomButtonHeight);
+	top: (@screenHeight);
 	left: (@screenWidth * 2);
 	width: @screenWidth;
 	height: (@screenHeight + @bottomButtonHeight);
@@ -219,7 +243,7 @@ animate up and down
 	position: absolute;
 	width: @screenWidth;
 	height: (@screenHeight + @bottomButtonHeight + 10);
-	top: (@screenHeight + @bottomButtonHeight);
+	top: (@screenHeight);
 	left: (@screenWidth * 2);	
 	background-color: white;
 	.box-sizing;
@@ -230,7 +254,7 @@ animate up and down
 
 #conversation {
 	position: absolute;
-	top: (@screenHeight + @bottomButtonHeight);
+	top: (@screenHeight);
 	left: 0px;
 }
 
@@ -239,14 +263,19 @@ animate up and down
 	div {
 		font-family: @buttonFont;
 		font-weight: @buttonWeight;
-		font-size: @buttonFontSize;
-		background-color: @buttonColor;
-		border: @thinBorder;
-		padding: 2px;
+		font-size: @buttonRoom;
+		background-color: @backgroundColor;
+		color: white;
+		border-top: 1px solid #3c3c3c;
+		border-bottom: 1px solid #282828;
+		padding: 1em 0.5em 0.5em 0.5em;
+		height: 5%;
+		
 		&:hover { 
 				color: white;
 				background-color: #00a2ff; 
-		}		
+		}	
+		
 	}
 }
 
@@ -254,11 +283,11 @@ animate up and down
 #screen {
 	position: relative;
 	top: 0px;
-	left: -1px;
+	left: 0px;
 	width: @screenWidth;
 	height: @screenHeight;
 	background-color: @backgroundColor;
-	border: @thinBorder;
+/* 	border: @thinBorder; */
 	.box-sizing;
 }
 
@@ -271,7 +300,7 @@ animate up and down
 	position: relative;
 	top: 0px;
 	left: 0px;
-	width: (@screenWidth - 1);
+	width: (@screenWidth);
 	height: @playerHeight;
 }
 
@@ -381,6 +410,7 @@ h2 {
 a {
 	text-decoration: none;
 }
+
 
 
 

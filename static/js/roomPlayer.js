@@ -11,13 +11,16 @@ var playlist = [];
 $(document).ready(function(){
 
 	var width = $(window).width();
-	var height = $(window).height() + 2;
+	var height = $(window).height();
 	console.log(width);
+	console.log(height);
 
 	function createVideo(id){
 		$('#ytplayer').attr('class', 'video-frame');
+/*
 		$('#ytplayer').attr('width', width);
 		$('#ytplayer').attr('height', 200);
+*/
 		$('#ytplayer').attr('src','http://www.youtube.com/embed/' + id + '?controls=0&showinfo=0&enablejsapi=1&iv_load_policy=3&rel=0&modestbranding=1&amp');
 		$('#ytplayer').attr('frameborder', '0');
 	}
@@ -26,6 +29,7 @@ $(document).ready(function(){
 	$('#searchContainer').css({zIndex: 100});	
 	var leftValue = 0;
 	var topValue = 0;
+	
 	$('#login-button').click(function() {
 		leftValue -= width;
 		$('#test-container').css({top: 0, left: leftValue, position: 'absolute'});
@@ -35,9 +39,7 @@ $(document).ready(function(){
   		leftValue -= width;
 	  	$('#test-container').css({top: 0, left: leftValue, position: 'absolute'});
   	});
-  	
-  	
-  	
+  	 	
   	$('#searchMenuButton').click(function() {
 	  	topValue -= height;
 	  	$('#test-container').css({top: topValue, left: leftValue, position: 'absolute'});
