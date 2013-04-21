@@ -15,10 +15,9 @@
 @screenWidth: 100%;
 @screenHeight: 100%;
 @screenViews: 3;
+@playerHeight: 35%;
 
-@playerHeight: 25%;
-
-@bottomButtonHeight: 60px;
+@bottomButtonHeight: 5%;
  
 /* margins */
 @buttonMarginTop: 5px;
@@ -121,7 +120,7 @@ input {
 ======================*/
 #login-screen {
 	position: absolute;
-	padding: 1px;
+/* 	padding: 1px; */
 	top: 0px;
 	left: 0px;
 	bottom: 0px;
@@ -136,11 +135,11 @@ input {
 			color: white;
 		}
 }
-
+/* round(percentage(@w/10000)) */
 #home-screen {
 	position: absolute;
 	top: 0px;
-	left: ((@screenWidth / @screenViews));
+	left: (@screenWidth / @screenViews);
 	width: (@screenWidth / @screenViews);
 	height: (@screenHeight);
 	display: inline-block;
@@ -180,7 +179,8 @@ input {
 	color: white;
 	border: 1px solid #3c3c3c;
 	text-align: center;
-		padding-top: 2em;
+	padding-top: 0.5em;
+	padding-bottom: 0.5em;
 
 }
 
@@ -200,7 +200,8 @@ input {
 	color: white;
 	border: 1px solid #3c3c3c;
 	text-align: center;
-	padding-top: 2em;
+	padding-top: 0.5em;
+	padding-bottom: 0.5em;
 }
 
 /*======================
@@ -302,7 +303,8 @@ animate up and down
 	position: relative;
 	top: 0px;
 	left: 0px;
-	width: (@screenWidth);
+	right: 0px;
+	width: @screenWidth;
 	height: @playerHeight;
 }
 

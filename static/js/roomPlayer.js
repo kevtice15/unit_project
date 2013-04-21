@@ -31,12 +31,15 @@ $(document).ready(function(){
 	var topValue = 0;
 	
 	$('#login-button').click(function() {
-		leftValue -= width;
+		leftValue -= (width - 1);
+/*   		leftValue -= Math.floor(width) */
 		$('#test-container').css({top: 0, left: leftValue, position: 'absolute'});
   	});	
 
   	$('#rooms').click(function() {
-  		leftValue -= width;
+  		leftValue -= (width - 1);
+/*   		leftValue -= Math.floor(width) */
+  		console.log(leftValue);
 	  	$('#test-container').css({top: 0, left: leftValue, position: 'absolute'});
   	});
   	 	
