@@ -4,8 +4,14 @@
 @buttonColor: white; 
      
 /* width height */
+/*
 @screenWidth: 320px;
 @screenHeight: 400px;
+*/
+
+@screenWidth: 100%;
+@screenHeight: 100%;
+
 @playerHeight: 180px;
 @bottomButtonHeight: 60px;
  
@@ -22,12 +28,44 @@
 @textWeight: 400;
 @buttonFontSize: 15px;
 
+/*=====================
+    general/global
+=======================*/
+
+/* turn off the annoying highlight on a tap (we provide our own visual feedback) */
+* {
+    -webkit-tap-highlight-color: transparent;
+    -moz-tap-highlight-color: transparent;
+    tap-highlight-color: transparent;
+}
+
+/* prevent the user from highlighting any text */
+* {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+/* allow highlighting text in inputs */
+input {
+    -webkit-user-select: text;
+    -moz-user-select: text;
+    -ms-user-select: text;
+    user-select: text;
+}
+
+
 /*Border box*/
 .box-sizing (@type: border-box) {
 	-webkit-box-sizing: @type;
 	-moz-box-sizing:    @type;
 	box-sizing:         @type;
 }
+
+
+
+
 
 
 /*======================
@@ -39,10 +77,9 @@
 	left:0px;
 	width: (@screenWidth * 3);
 	height: (@screenHeight + @bottomButtonHeight);
-/* 	border: @thinBorder; */
+	border: @thinBorder;
 	.box-sizing;
-	// overflow: hidden;
-	
+	// overflow: hidden;	
 	-moz-transition:ease .5s;
 	-webkit-transition:ease .5s;
 	-ms-transition:ease .5s;
@@ -55,7 +92,13 @@
 	position: absolute;
 	top: 0px;
 	left: 0px;
+	right: 0px;
+	bottom: 0px;
+/*
 	width: (@screenWidth - 1);
+	height: (@screenHeight + @bottomButtonHeight);
+*/
+	width: @screenWidth;
 	height: (@screenHeight + @bottomButtonHeight);
 	overflow: hidden;
 	border: 1px solid black;
@@ -69,7 +112,7 @@
 	position: absolute;
 	top: 0px;
 	left: 0px;
-	width: @screenWidth;
+	width: 100%;
 	height: (@screenHeight + @bottomButtonHeight);
 	display: inline-block;
 	.box-sizing;
