@@ -1,6 +1,6 @@
 var mongoose = require('mongoose');
 
-exports.create = function(request){
+exports.create = function(request, response){
 	var Resource = mongoose.model('User');
 	console.log("THIS EVENT FIRES*******************************",request);
 	var fields = request.data.body;
@@ -8,9 +8,9 @@ exports.create = function(request){
 	var r = new Resource(fields);
 	r.save(function(err, Resource){
 		if(err){
-			//response.send(500, {error: err});
+			response.send(500, {error: err});
 		}
-		//response.send(Resource);
+		response.send(Resource);
 	});
 };
 

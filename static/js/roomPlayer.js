@@ -19,6 +19,22 @@ $(document).ready(function(){
 		$('#ytplayer').attr('frameborder', '0');
 	}
 
+	function handleLogin(){
+		$.ajax({
+			type: "get",
+			url: "/auth/google",
+			success: function(data, err){
+				console.log(data);
+				//put the user in the db
+			},
+			error: function(data, var2, err){
+				console.log(data);
+				console.log(err);
+			}
+		});
+		console.log("sent ajax request");
+	}
+
 
 	$('#searchContainer').css({zIndex: 100});	
 	var leftValue = 0;
@@ -26,6 +42,7 @@ $(document).ready(function(){
 	$('#login-button').click(function() {
 		leftValue -= 320;
 		$('#test-container').css({top: 0, left: leftValue, position: 'absolute'});
+  		handleLogin();
   	});	
 
   	$('#rooms').click(function() {

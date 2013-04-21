@@ -9,8 +9,7 @@ var express = require('express.io'),
 	passport = require('passport'),
 	GoogleStrategy = require('passport-google-oauth').OAuth2Strategy,
 	MemoryStore = express.session.MemoryStore,
-	sessionStore = new MemoryStore(),
-	passportSocketIo = require('passport.socketio');
+	sessionStore = new MemoryStore();
 
 var GOOGLE_CLIENT_ID = "846887029586.apps.googleusercontent.com";
 var GOOGLE_CLIENT_SECRET = "PzU_-cecGvD5VMhkiOTDIvvX";
@@ -42,12 +41,13 @@ passport.use(new GoogleStrategy({
   function(accessToken, refreshToken, profile, done) {
     // asynchronous verification, for effect...
     process.nextTick(function () {
-      console.log("Google Profile:", profile);
+      //console.log("Google Profile:", profile);
 
       // To keep the example simple, the user's Google profile is returned to
       // represent the logged-in user.  In a typical application, you would want
       // to associate the Google account with a user record in your database,
       // and return that user instead.
+      handleUser(profile._json);
       return done(null, profile._json);
     });
   }
@@ -69,6 +69,7 @@ app.configure(function() {
   app.use(passport.initialize());
   app.use(passport.session());
   app.use(app.router);
+  /*
   app.use(express.static(__dirname + '/public'));
   app.io.set("authorization", passportSocketIo.authorize({
     key:    'express.sid',       //the cookie where express (or connect) stores its session id.
@@ -85,6 +86,7 @@ app.configure(function() {
         accept(null, true);
     }
 	}));
+	*/
 });
 
 
@@ -98,6 +100,10 @@ app.get("/static/:filename", function(request, response){
 
 app.get("/static/js/:filename", function(request, response){
 	response.sendfile("static/js/" + request.params.filename);
+});
+
+app.get("/static/lib/:filename", function(request, response){
+	response.sendfile("static/lib/" + request.params.filename);
 });
 
 app.get("/static/css/:filename", function(request, response){
@@ -135,14 +141,16 @@ app.get('/auth/google',
 //   login page.  Otherwise, the primary route function function will be called,
 //   which, in this example, will redirect the user to the home page.
 app.get('/auth/google/callback',
-  passport.authenticate('google', { failureRedirect: '/static/login.html' }),
+  passport.authenticate('google', { failureRedirect: '/static/index.html' }),
   function(req, res) {
+	console.log("auth google callback");
     res.redirect('/static/index.html');
+    //res.send({success:true});
 });
 
 app.get('/logout', function(req, res){
   req.logout();
-  res.redirect('/');
+  res.redirect('/static/index.html');
 });
 
 
@@ -195,6 +203,18 @@ var server = app.listen(8889);
 console.log('Express listening on port 8889');
 
 
+
+function handleUser(profile){
+	console.log("This will add a user to the db", profile);
+	//If the user is in the db, return the user
+	if()
+	//If not, create it in the db
+	//Return the user
+}
+
+
+
+
 /*===========================
 		Socket Server
 ===========================*/
@@ -216,10 +236,20 @@ app.io.sockets.on("connection", function(socket) {
 		var nameandroom = {name: "roomname", room: "room"};
 		// store the username in the socket session for this client
 		// CREATE NEW USER IN DB
-		var newUser = socket.handshake.user;
-		console.log("*************HEY LOOKADAT USER***********", socket.handshake.user);
-		users.create({data: {body: {_id: newUser.id, name: newUser.given_name}}});
-		socketEventLog("users:create");
+		
+
+
+		//var newUser = socket.handshake.user;
+		
+
+
+		//console.log("*************HEY LOOKADAT USER***********", socket.handshake.user);
+		
+
+
+
+		//users.create({data: {body: {_id: newUser.id, name: newUser.given_name}}});
+		socketEventLog("238 users:create");
 		/*
 		var newUser = mongoose.model("User");
 		var newRoom = mongoose.model("Room");
@@ -230,9 +260,9 @@ app.io.sockets.on("connection", function(socket) {
 		socket.username = nameandroom.name;
 		*/
 		socket.emit('rooms:create', {body:{name: nameandroom.room}});
-		socketEventLog("rooms:create");
+		socketEventLog("249 rooms:create");
 		
-		console.log("********Socket Log*********", socket);
+		//console.log("********Socket Log*********", socket);
 		// store the room name in the socket session for this client
 		// CREATE NEW ROOM IN DB
 		// SET USERS ROOM TO THAT ROOM
