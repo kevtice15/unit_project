@@ -75,13 +75,19 @@ require("./routes/routes.js")(app);
 //   have a database of user records, the complete Google profile is
 //   serialized and deserialized.
 passport.serializeUser(function(user, done) {
-	console.log("Serialize", user);
+//console.log("Serialize", user);
   done(null, user.id);
 });
 
 passport.deserializeUser(function(id, done){
-	User.findById(id, function(err, id){
-		done(err, id);
+	//var userId = new mongoose.Types.ObjectID(id);
+	User.findOne({'google_id': id}, function(err, user){
+		if(err){
+			console.log(err);
+		}
+		else{
+			done(null, user);
+		}
 	});
 });
 
@@ -103,7 +109,22 @@ passport.use(new GoogleStrategy({
       // represent the logged-in user.  In a typical application, you would want
       // to associate the Google account with a user record in your database,
       // and return that user instead.
-      handleUser(profile._json);
+      User.findOne({'google_id': profile.id}, function(err, docs){
+		console.log(docs);
+		if(docs !== undefined){
+			//Start a session
+			return done(null, docs);
+		}
+		else{
+			var newUser = new User({google_id: profile.id, name: profile.name});
+			newUser.save(function(err){
+				if(err)
+					console.log(err);
+					done(null, false);
+			});
+			return done(null, newUser);
+		}
+	});
       return done(null, profile._json);
     });
   }
@@ -208,22 +229,7 @@ function handleUser(profile){
 	console.log("This will add a user to the db", profile);
 	//If the user is in the db, return the user
 	//var user = mongoose.model('user', UserSchema);
-	var query = User.findOne({'google_id': profile.id}, function(err, docs){
-		console.log(docs);
-		if(docs !== undefined){
-			//Start a session
-			done(null, docs);
-		}
-		else{
-			var newUser = new User({google_id: profile.id, name: profile.name});
-			newUser.save(function(err){
-				if(err)
-					console.log(err);
-					done(null, false);
-			});
-			done(null, newUser);
-		}
-	});
+	//var query = 
 }
 
 
