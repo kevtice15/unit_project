@@ -43,10 +43,19 @@ function addVideoToPlaylist(playlist_id, vid_id, vid_name){
 $(document).ready(function(){
 
 
+
+
+	var width = $(window).width();
+	var height = $(window).height();
+	console.log(width);
+	console.log(height);
+
 	function createVideo(id){
 		$('#ytplayer').attr('class', 'video-frame');
-		$('#ytplayer').attr('width', 320);
+/*
+		$('#ytplayer').attr('width', width);
 		$('#ytplayer').attr('height', 200);
+*/
 		$('#ytplayer').attr('src','http://www.youtube.com/embed/' + id + '?controls=0&showinfo=0&enablejsapi=1&iv_load_policy=3&rel=0&modestbranding=1&amp');
 		$('#ytplayer').attr('frameborder', '0');
 	}
@@ -55,21 +64,49 @@ $(document).ready(function(){
 	$('#searchContainer').css({zIndex: 100});	
 	var leftValue = 0;
 	var topValue = 0;
+	
+/*
 	$('#login-button').click(function() {
-		leftValue -= 320;
-		$('#test-container').css({top: 0, left: leftValue, position: 'absolute'});
+		leftValue -= (width - 0);
+		$('#canvasDiv').css({top: - 0, left: leftValue, position: 'absolute'});
   	});	
+*/
 
   	$('#rooms').click(function() {
-  		leftValue -= 320;
-	  	$('#test-container').css({top: 0, left: leftValue, position: 'absolute'});
+  		leftValue -= (width - 0);
+/*   		leftValue -= Math.floor(width) */
+  		console.log(leftValue);
+	  	$('#canvasDiv').css({top: 0, left: leftValue, position: 'absolute'});
   	});
+  	
+  	$('#backButton').click(function() {
+  		leftValue += (width - 0);
+  		console.log(leftValue);
+	  	$('#canvasDiv').css({top: - 0, left: leftValue, position: 'absolute'});	  	
+  	});
+  	 	
+ 	 	
+  	//search menu
+  	$('#searchVideo').click(function() {
+		leftValue -= (width - 0);
+ 	  	$('#canvasDiv').css({top: 0, left: leftValue, position: 'absolute'}); 	
+ 	  	console.log("done");
+  	});    	 	
+  	 	
+	$('#searchDone').click(function() {
+		leftValue += (width - 0);
+ 	  	$('#canvasDiv').css({top: 0, left: leftValue, position: 'absolute'}); 	
+ 	  	console.log("done");
+ 	  	});  	 	
+  	 	
+  	
+  	
   	
   	
   	
   	$('#searchMenuButton').click(function() {
-	  	topValue -= 462;
-	  	$('#test-container').css({top: topValue, left: leftValue, position: 'absolute'});
+	  	topValue -= height;
+	  	$('#canvasDiv').css({top: topValue, left: leftValue, position: 'absolute'});
 	  	$('#playlist-wrapper').css({zIndex: 0});
 	  	$('#searchContainer').css({zIndex: 100});
   	});
@@ -78,26 +115,31 @@ $(document).ready(function(){
 	  	search($('#query').val());
   	});
   	
-  	$('#searchDone').click(function() {
-		topValue += 462;
- 	  	$('#test-container').css({top: topValue, left: leftValue, position: 'absolute'}); 	
- 	  	console.log("done");
-  	});
+
   	
-  	$('#playlistDone').click(function() {
-		topValue += 462;
- 	  	$('#test-container').css({top: topValue, left: leftValue, position: 'absolute'}); 	
- 	  	console.log("done");
-  	});  	
+	
   	
   	$('#playListMenuButton').click(function(){
-	  	topValue -= 462;
-	  	$('#test-container').css({top: topValue, left: leftValue, position: 'absolute'});
+	  	topValue -= height;
+	  	$('#canvasDiv').css({top: topValue, left: leftValue, position: 'absolute'});
 	  	$('#searchContainer').css({zIndex: 0});
 	  	$('#playlist-wrapper').css({zIndex: 100});
   	});
-
   	
+  	var playerHeightRatio = 0.5;
+  	var menuPercentage = .10;	
+  	var playerTop  = (playerHeightRatio * height) + (menuPercentage * height) ; 
+  	var down = false;
+  	$('#playerButton').click(function(){
+  	console.log(playerTop);
+	  	if(down === false) {
+		  	$('#playListDiv').css({bottom: - playerTop, left: 0, position: 'absolute'});
+		  	down =true;
+		} else {
+			$('#playListDiv').css({bottom: 0, left: 0, position: 'absolute'});
+		  	down =false;
+		}
+  	})
 
 	//Will want to put a add videos thing to the empty video or a create group thing
 	createVideo(playlist[0]);
