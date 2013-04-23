@@ -1,5 +1,11 @@
 var mongoose = require('mongoose');
-
+ 
+var Video = new mongoose.Schema({
+	youtube_id: String,
+	name: String,
+	votes: Number
+});
+/*
 var Video = function(youtube_id, name, votes){
 	this.youtube_id = youtube_id;
 	this.name = name;
@@ -29,7 +35,7 @@ var Video = function(youtube_id, name, votes){
 		this.votes--;
 	};
 };
-
+*/
 var Playlist = new mongoose.Schema({
 	videos: [Video],
 	creator: mongoose.Schema.ObjectId,
@@ -57,6 +63,7 @@ Playlist.methods.addCreatorandDJ = function(user){
 	console.log("Added creator and dj: ", user);
 };
 
+//Returns the playlists associated with a given user id, passes them back in a callback fn
 Playlist.methods.getUserPlaylists = function(id, got){
 	var Plist = mongoose.model("Playlist");
 	Plist.find({creator: id}, {}, function(err, docs){
@@ -68,4 +75,24 @@ Playlist.methods.getUserPlaylists = function(id, got){
 	});
 };
 
+Playlist.methods.addNewVideo = function(playlist_id, video_id, video_name, pushIt){
+	var Plist = mongoose.model("Playlist");
+	var Vid = mongoose.model("Video");
+	var newVideo = new Vid({youtube_id: video_id}, {name: video_name}, {votes: 0});
+	console.log("Playlist ID: ", playlist_id);
+	console.log("Video ID: ", video_id);
+	console.log("Video Name: ", video_name);
+	var query = Plist.findById(playlist_id, function(err, docs){
+		if(err){
+			console.log(err);
+		}
+		else{
+			console.log("docs", docs);
+			return pushIt(docs, newVideo);
+		}
+	});
+	console.log("query", query);
+};
+
 module.exports = mongoose.model("Playlist", Playlist);
+module.exports = mongoose.model("Video", Video);

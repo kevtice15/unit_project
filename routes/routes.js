@@ -2,6 +2,7 @@
 var playlists = require('../controllers/playlists');
 var rooms = require('../controllers/rooms');
 var users = require('../controllers/users');
+var videos = require('../controllers/videos');
 
 module.exports = function(app){
 
@@ -78,10 +79,7 @@ app.io.route('rooms', {
 		users.del(request, response);
 	});
 
-	app.get('/users/:id/playlists', function(request, response){
-		users.retrievePlaylists(request, response);
-	});
-	
+
 	//Room routes
 	app.post('/rooms', function(request, response){
 		rooms.create(request, response);
@@ -122,6 +120,37 @@ app.io.route('rooms', {
 
 	app.del('/playlists/:id', function(request, response){
 		playlists.del(request, response);
+	});
+
+	//Video routes
+	app.post('/videos', function(request, response){
+		videos.create(request, response);
+	});
+
+	app.get('/videos', function(request, response){
+		videos.retrieve(request, response);
+	});
+
+	app.get('/videos/:id', function(request, response){
+		videos.retrieve(request, response);
+	});
+
+	app.put('/videos/:id', function(request, response){
+		videos.update(request, response);
+	});
+
+	app.del('/videos/:id', function(request, response){
+		videos.del(request, response);
+	});
+
+
+	//My Routes
+	app.get('/users/:id/playlists', function(request, response){
+		users.retrievePlaylists(request, response);
+	});
+
+	app.post('/playlists/new/video/:id', function(request, response){
+		playlists.addVideo(request, response);
 	});
 };
 

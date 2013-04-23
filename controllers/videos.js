@@ -1,22 +1,19 @@
 var mongoose = require('mongoose');
 
 exports.create = function(request, response){
-	var Resource = mongoose.model('Playlist');
+	var Resource = mongoose.model('Video');
 	var fields = request.body;
-	console.log("CREATE PLAYLIST REQUEST", request.user);
 	var r = new Resource(fields);
 	r.save(function(err, Resource){
 		if(err){
 			response.send(500, {error: err});
 		}
-
-		r.addCreatorandDJ(request.user);
 		response.send(Resource);
 	});
 };
 
 exports.retrieve = function(request, response){
-	var Resource = mongoose.model('Playlist');
+	var Resource = mongoose.model('Video');
 
 	if(request.params.id !== undefined){
 		Resource.findById(request.params.id, function(err, Resource){
@@ -39,7 +36,7 @@ exports.retrieve = function(request, response){
 };
 
 exports.update = function(request, response){
-	var Resource = mongoose.model('Playlist');
+	var Resource = mongoose.model('Video');
 	var fields = request.body;
 
 	Resource.findByIdAndUpdate(request.params.id, {$set: fields}, function(err, Resource){
@@ -56,7 +53,7 @@ exports.update = function(request, response){
 };
 
 exports.del = function(request, response){
-	var Resource = mongoose.model('Playlist');
+	var Resource = mongoose.model('Video');
 
 	Resource.findByIdAndRemove(request.params.id, function(err, Resource){
 		if(err){
@@ -70,29 +67,3 @@ exports.del = function(request, response){
 		}
 	});
 };
-
-exports.addVideo = function(request, response){
-	var Resource = mongoose.model('Playlist');
-	var Vid = mongoose.model('Video');
-	var playlist_id = request.params.id;
-	console.log("Playlists playlist id", playlist_id);
-	var fields = request.body;
-	console.log("fields", fields);
-	var r = new Resource();
-	r.addNewVideo(playlist_id, fields.video_id, fields.video_name, function(docs, video){
-		console.log("DOCS", docs);
-		r.videos.push(video);
-		console.log(r.videos[0]);
-		r.save(function(err, Resource){
-			if(err){
-				response.send(500, {error: err});
-			}
-			response.send(Resource);
-		});
-	});
-	response.send(r);
-};
-
-function playlistLog(err){
-	console.log("[playlist route] - ", err);
-}

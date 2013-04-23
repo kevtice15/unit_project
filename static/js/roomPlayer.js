@@ -29,6 +29,17 @@ function getMyPlaylists(id){
 	});
 }
 
+function addVideoToPlaylist(playlist_id, vid_id, vid_name){
+	$.ajax({
+		type: 'post',
+		data: {'body':{'video_id': vid_id, 'video_name': vid_name}},
+		url: '/playlists/new/video/' + playlist_id,
+		success: function(data){
+			console.log(data);
+		}
+	});
+}
+
 $(document).ready(function(){
 
 
