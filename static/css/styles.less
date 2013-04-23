@@ -1,21 +1,17 @@
 /* colors */
 @accentColor: #00a2ff;
-@backgroundColor: #202020;
+@backgroundColor: #313131;
 @backgroundColor2: #444444;
 @buttonColor: white; 
-     
-     
+@menuColor: #282828;     
      
 /* width height */
-/*
-@screenWidth: 320px;
-@screenHeight: 400px;
-*/
-
 @screenWidth: 100%;
 @screenHeight: 100%;
 @screenViews: 3;
-@playerHeight: 35%;
+
+@playerHeight: 50%;
+@menuHeight: 10%;
 
 @bottomButtonHeight: 5%;
  
@@ -28,11 +24,12 @@
 
 /* fonts */
 @buttonFont: 'Noto Sans', sans-serif;
-@buttonWeight: 700; 
+@buttonWeight: 400; 
 @textWeight: 400;
 
 @buttonFontSize: 15px;
 @buttonRoom: 1em;
+@menuFontSize: 2em;
 
 a {
 	text-decoration: none;
@@ -72,15 +69,43 @@ input {
 	box-sizing:         @type;
 }
 
+.borderStyle {
+	border-top: 1px solid rgb(66, 65, 65);
+	border-bottom: 1px solid #282828;
+}
 
+.borderStyleMenu{
+	border-top: 1px solid #3c3c3c;
+	border-bottom: 1px solid rgb(9, 9, 9);	
+};
 
+.rightIcon {
+	height: 100%;
+	float: right;
+}
 
+.centerIcon {
+	height: 100%;
+	opacity: 0.5;
+	margin-left: auto;
+	margin-right: auto;
+	text-align: center;
+}
 
+.leftIcon {
+	height: 100%;
+	float: left;
+}
 
+.icon {
+	height: 100%;
+	margin-left: auto;
+	margin-right: auto;
+}
 /*======================
 	Outer Container
 ======================*/
-#test-container {
+#canvasDiv {
 	position: absolute;
 	top:0px;
 	left:0px;
@@ -118,34 +143,65 @@ input {
 /*======================
 	Three screens 
 ======================*/
+/*
 #login-screen {
 	position: absolute;
-/* 	padding: 1px; */
 	top: 0px;
 	left: 0px;
 	bottom: 0px;
 	right: 0px;
 	width: (@screenWidth / @screenViews);
-	height: (@screenHeight);
-	display: inline-block;
+	height: @screenHeight;
 	text-align: center;
-	.box-sizing;
 	padding: 1px;
 		h2 {
 			color: white;
+			font-size: 3em;
+			padding: 0px;
 		}
 }
-/* round(percentage(@w/10000)) */
+*/
+
+.iconButton {
+	cursor: hand;
+	padding: 0px;
+	margin: 0px;
+}
+
+#loginImg {
+	width: 50%;
+	border:1px solid white;
+	margin-top: 10%;
+
+}
+
+#login {
+	width: 50%;
+	height: 5%;
+/* 	font-size: 1.5em; */
+}
+
+
+/* home screen */
 #home-screen {
 	position: absolute;
+/*
 	top: 0px;
 	left: (@screenWidth / @screenViews);
+	width: 100%;
+	height: @screenHeight;
+*/
+
+	top: 0px;
+	left: 0px;
+	bottom: 0px;
+	right: 0px;
 	width: (@screenWidth / @screenViews);
-	height: (@screenHeight);
+	height: @screenHeight;
 	display: inline-block;
 	padding: 1px;
-
 	.box-sizing;
+	
 	h2 {
 		padding: 1em;
 		color: white;
@@ -155,15 +211,205 @@ input {
 	}
 }
 
+#homeMenu {
+	position: relative;
+	display: inline-block;
+	background: @menuColor;
+	top: 0px;
+	left: 0px;
+/* 	width: (@screenWidth / @screenViews); */
+	width: 100%;
+	height: @menuHeight;
+	text-align: center;
+	font-family: @buttonFont;
+	.borderStyleMenu;
+	color: rgba(255,255,255,0.5);
+	font-size: @menuFontSize;
+	img {
+/* 		height: 100%; */
+	}
+}
+
+
+
+#rooms {
+	position: relative;
+	div {
+
+		.borderStyle;
+		font-family: @buttonFont;
+		font-weight: @buttonWeight;
+		font-size: @buttonRoom;
+		background-color: @backgroundColor;
+		color: white;
+		line-height: 100%;
+		padding: 1em 1em 1em 1em;
+
+		height: 3%;
+		
+		&:hover { 
+				color: white;
+				background-color: #00a2ff; 
+		}	
+		
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+/* room screen */
 #room {
 	position: absolute;
+/*
 	top: 0px;
 	left: ((@screenWidth / @screenViews) * 2);
 	width: (@screenWidth / @screenViews);
 	height: (@screenHeight);
+*/
+	top: 0px;
+	left: (@screenWidth / @screenViews);
+	width: @screenWidth / @screenViews;
+	height: @screenHeight;	
+	
+	
 	display: inline-block;
 /* 	.box-sizing; */
 }
+
+#roomMenu {
+	position: relative;
+	.borderStyleMenu;
+	background: @menuColor;
+	top: 0px;
+	left: 0px;
+
+	width: 100%;
+	height: @menuHeight;
+	text-align: center;
+	font-family: @buttonFont;
+/* 	padding-top: 1em;	padding-bottom: 1em; */
+	z-index: 100;	
+}
+
+#roomSubMenu {
+	position: relative;
+	height: @menuHeight * 2;
+	width: @screenWidth;
+	background-color: @backgroundColor;
+	font-family: @buttonFont;
+
+	.borderStyleMenu;
+} 
+
+
+
+/*pushes down playlist on menu click, large container*/
+#playListDiv {
+	position: absolute;
+	width: 100%;
+	bottom: 0px;
+	height: (@playerHeight + @screenHeight);
+	background: @backgroundColor;
+	
+	
+	-moz-transition:ease .5s;
+	-webkit-transition:ease .5s;
+	-ms-transition:ease .5s;
+	-o-transition:ease .5s;
+	transition:ease .5s;	
+}
+
+/* contains buttons and youtubeplayer */
+#playerDiv {
+	position: relative; 
+	top: 0px;
+	left: 0px;	
+	width: @screenWidth;
+	height: (100%/3) ;
+	background: @backgroundColor;
+	
+}
+
+#ytplayer {
+	position: relative;
+	top: 0px;
+	left: 0px;
+	right: 0px;
+	width: @screenWidth;
+	height: 100%;
+}
+
+#ytButtons {
+	position: relative;
+
+
+	height: @menuHeight * 2;
+	width: @screenWidth;
+	background: black;
+	cursor: hand;	
+	display: inline-block;
+
+	line-height: 100%;
+
+	text-align: center;
+	font-size: @menuFontSize;
+	img {
+		height: 80%;
+		margin-left: auto;
+		margin-right: auto;	
+		margin-top: 0.1em;
+		margin-bottom: 0.1em;
+		padding: 0px 0.1em 0px 0.1em;
+			
+	}
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+#buttons {
+	position: relative;
+	margin-top: 5px;
+	padding: 3px;
+	cursor: hand;	
+	a {
+		font-family: @buttonFont;
+		font-weight: @buttonWeight;
+		font-size: @buttonFontSize;
+		background-color: @buttonColor;
+		border: @thinBorder;
+		padding: 2px;
+		&:hover { 
+				color: white;
+				background-color: #00a2ff; 
+		}
+	}
+}
+
+
+
+
+
+
 
 #searchMenuButton {
 	position: absolute;
@@ -224,11 +470,43 @@ search results will
 
 #searchContainer {
 	position: absolute;
-	top: (@screenHeight);
-	left: (@screenWidth/ @screenViews * 2);
-	width: @screenWidth/ @screenViews;
+/*
+	top: 0px;
+	left: (@screenWidth/ @screenViews * 3);
+	width: (@screenWidth/ @screenViews);
 	height: (@screenHeight + @bottomButtonHeight);
+*/
+
+	top: 0px;
+	left: ((@screenWidth / @screenViews) * 2);
+	width: (@screenWidth / @screenViews);
+	height: (@screenHeight + @bottomButtonHeight);
+
+
 	background-color: white;
+	line-height: 100%;
+	input {
+		height: 60%;
+		width: 60%;
+		line-height: 100%;
+		margin-top: 1em;
+		margin-bottom: 1em;		
+	}
+}
+
+#videoSearchMenu {
+	position: relative;
+	.borderStyleMenu;
+	background: @menuColor;
+	top: 0px;
+	left: 0px;
+
+	width: 100%;
+	height: @menuHeight;
+	text-align: center;
+	font-family: @buttonFont;
+/* 	padding-top: 1em;	padding-bottom: 1em; */
+	z-index: 100;	
 }
 
 #searchResults {
@@ -262,70 +540,19 @@ animate up and down
 }
 
 
-#rooms {
-	div {
-		font-family: @buttonFont;
-		font-weight: @buttonWeight;
-		font-size: @buttonRoom;
-		background-color: @backgroundColor;
-		color: white;
-		border-top: 1px solid #3c3c3c;
-		border-bottom: 1px solid #282828;
-		padding: 1em 0.5em 0.5em 0.5em;
-		height: 5%;
-		
-		&:hover { 
-				color: white;
-				background-color: #00a2ff; 
-		}	
-		
-	}
-}
-
-
-#screen {
-	position: relative;
-	top: 0px;
-	left: 0px;
-	width: @screenWidth;
-	height: @screenHeight;
-	background-color: @backgroundColor;
-/* 	border: @thinBorder; */
-	.box-sizing;
-}
 
 
 
 
 
 
-#ytplayer {
-	position: relative;
-	top: 0px;
-	left: 0px;
-	right: 0px;
-	width: @screenWidth;
-	height: @playerHeight;
-}
 
-#buttons {
-	position: relative;
-	margin-top: 5px;
-	padding: 3px;
-	cursor: hand;	
-	a {
-		font-family: @buttonFont;
-		font-weight: @buttonWeight;
-		font-size: @buttonFontSize;
-		background-color: @buttonColor;
-		border: @thinBorder;
-		padding: 2px;
-		&:hover { 
-				color: white;
-				background-color: #00a2ff; 
-		}
-	}
-}
+
+
+
+
+
+
 
 #data {
 	position: relative;
@@ -359,8 +586,12 @@ animate up and down
 	}
 }
 
-#playlistDone {
+#searchVideo {
 	float: right;
+}
+
+#backButton {
+	float: left;
 }
 
 
@@ -414,8 +645,6 @@ h2 {
 a {
 	text-decoration: none;
 }
-
-
 
 
 
