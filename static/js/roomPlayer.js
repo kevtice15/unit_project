@@ -19,7 +19,7 @@ function createPlaylist(pname, pshared){
 	});
 }
 
-function getUserPlaylists(id){
+function getMyPlaylists(id){
 	$.ajax({
 		type: 'get',
 		url:'/users/' + id + '/playlists',

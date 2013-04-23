@@ -56,7 +56,6 @@ exports.update = function(request, response){
 
 exports.del = function(request, response){
 	var Resource = mongoose.model('UserSchema');
-
 	Resource.findByIdAndRemove(request.params.id, function(err, Resource){
 		if(err){
 			response.send(500, {error: err});
@@ -72,10 +71,13 @@ exports.del = function(request, response){
 
 exports.retrievePlaylists = function(request, response){
 	var Resource = mongoose.model("Playlist");
-	var userPlaylists = Resource.getUserPlaylists(request.params.id);
-	response.send({
-		playlist: userPlaylists,
-		success: true
+	var r = new Resource(request.body);
+	var userPlaylists = r.getUserPlaylists(request.params.id, function(docs){
+		console.log("RESPONSE", docs);
+		response.send({
+			playlist: docs,
+			success: true
+		});
 	});
 };
 

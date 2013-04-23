@@ -57,12 +57,13 @@ Playlist.methods.addCreatorandDJ = function(user){
 	console.log("Added creator and dj: ", user);
 };
 
-Playlist.methods.getUserPlaylists = function(id){
+Playlist.methods.getUserPlaylists = function(id, got){
 	var Plist = mongoose.model("Playlist");
 	Plist.find({creator: id}, {}, function(err, docs){
 		if(err) console.log(err);
 		else{
 			console.log(docs);
+			return got(docs);
 		}
 	});
 };
