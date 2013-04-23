@@ -3,13 +3,15 @@ var mongoose = require('mongoose');
 exports.create = function(request, response){
 	var Resource = mongoose.model('Playlist');
 	var fields = request.body;
-
+	console.log("CREATE PLAYLIST REQUEST", request.user);
 	var r = new Resource(fields);
 	r.save(function(err, Resource){
 		if(err){
 			response.send(500, {error: err});
 		}
-		response.send(resource);
+
+		r.addCreatorandDJ(request.user);
+		response.send(Resource);
 	});
 };
 
