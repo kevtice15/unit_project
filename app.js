@@ -82,14 +82,14 @@ passport.serializeUser(function(user, done) {
 ///////DONT CALL THIS AGAIN DOWN THERE
 passport.deserializeUser(function(id, done){
 	//var userId = new mongoose.Types.ObjectID(id);
-	User.findOne({'google_id': id}, function(err, user){
-		if(err){
-			console.log(err);
-		}
-		else{
-			done(null, user);
-		}
-	});
+	//User.findOne({'google_id': id}, function(err, user){
+	//	if(err){
+	//		console.log(err);
+	//	}
+	//	else{
+			done(null, id);
+	//	}
+	//});
 });
 
 // Use the GoogleStrategy within Passport.
@@ -249,90 +249,76 @@ console.log('Express listening on port 8889');
 var usernames = {};
 
 // rooms which are currently available in chat
-var rooms = ['room1','room2','room3'];
+var roomArray = ['room1','room2','room3'];
+var roomState = {
+	'playlist': []
+}
 
 
 app.io.sockets.on("connection", function(socket) {
 
-	// when the client emits 'adduser', this listens and executes
-	socket.on('adduser', function(){
-		var nameandroom = {name: "roomname", room: "room"};
-		// store the username in the socket session for this client
-		// CREATE NEW USER IN DB
-		console.log(socket.handshake);
-
-
-		//var newUser = socket.handshake.user;
-		
-
-
-		//console.log("*************HEY LOOKADAT USER***********", socket.handshake.user);
-		
-
-
-
-		//users.create({data: {body: {_id: newUser.id, name: newUser.given_name}}});
-		socketEventLog("238 users:create");
-		/*
-		var newUser = mongoose.model("User");
-		var newRoom = mongoose.model("Room");
-		console.log("I GET HERE");
-		socket.emit('users:create', {body:{name: nameandroom.name}});
-		socketEventLog("users:create");
-		console.log("I GET HERE 2");
-		socket.username = nameandroom.name;
-		*/
-		socket.emit('rooms:create', {body:{name: nameandroom.room}});
-		socketEventLog("249 rooms:create");
-		
-		//console.log("********Socket Log*********", socket);
-		// store the room name in the socket session for this client
-		// CREATE NEW ROOM IN DB
-		// SET USERS ROOM TO THAT ROOM
-		//////////////socket.emit('user:update', {body: {"id": , "room_id": }});
-		socket.room = 'room1';
-		// add the client's username to the global list
-		usernames[nameandroom.name] = nameandroom.name;
-
-		// SET USERS ROOM TO THAT ROOM
-		// send client to room 1
-		socket.join('room1');
-		// echo to client they've connected
-		socket.emit('updatechat', 'you have connected to room1');
-		// echo to room 1 that a person has connected to their room
-		socket.broadcast.to('room1').emit('updatechat', nameandroom.name + ' has connected to this room');
-		socket.emit('updaterooms', rooms, 'room1');
-		console.log("HEY HERES THE END OF THE ADD USER EVENT");
-		
-	});
+	console.log('SERVER CONNECTION!@@@@@@@@@@@@@@@@@@@@@@@@@@');
 
 	socket.on('addRoom', function(roomname){
-		socket.emit('rooms:create', {body:{name: roomname}});
+		//socket.emit('rooms:create', {body:{name: roomname}});
+	//	rooms.create({name: roomname});
 	});
 
-	socket.on('switchRoom', function(newroom){
-		// leave the current room (stored in session)
+
+	socket.on('joinRoom', function(roomname){
+		// store the room name in the socket session for this client
+		socket.room = roomname;
+
+		// join room
+		socket.join(roomname);
+		
+		console.log("you joined: " + roomname);
+		// echo to client they've connected
+		socket.emit('updatechat', 'you have connected to' + roomname);
+		// echo to room 1 that a person has connected to their room
+		socket.broadcast.to(roomname).emit('updatechat',  ' has connected to this room');
+
+		
+		
+	});
+
+
+	socket.on('disconnect', function(){
+		var oldroom = socket.room;
 		socket.leave(socket.room);
-		// join new room, received as function parameter
-		socket.join(newroom);
-		socket.emit('updatechat', 'you have connected to '+ newroom);
-		// sent message to OLD room
-		socket.broadcast.to(socket.room).emit('updatechat', socket.username+' has left this room');
-		// update socket session room title
-		socket.room = newroom;
-		socket.broadcast.to(newroom).emit('updatechat', socket.username+' has joined this room');
-		socket.emit('updaterooms', rooms, newroom);
+		console.log('user left room');
+		app.io.sockets.in(oldroom).emit('updatechat', ' has left this room');
+		app.io.sockets.emit('updaterooms', rooms);
 	});
-
 
 	socket.on('videoAdded', function(data){
-		socket.emit('status', {success: 'true'})
-		app.io.sockets.emit('newVideo', { body: data.body });
+		socket.emit('status', {success: 'true'});
+		app.io.sockets.in(socket.roomname).emit('newVideo', { body: data.body });
+		roomState.playlist.push(data.body);
+		console.log("Current playlist on server: " + roomState.playlist);
 	});
 
-	socket.on('next', function(video){
-		socket.emit('status', {success: 'true'})
-		socket.broadcast.to('room1').emit('updateVideo', video);
+	socket.on('updateVideo', function(video){
+		socket.emit('status', {success: 'true'});
+		// socket.broadcast.to('room1').emit('updateVideo', video);
+		app.io.sockets.in(socket.roomname).emit('updateVideo', video);
+	});
+
+	socket.on('playPause', function(data){
+		console.log("server received playpause: " +  data.state + " at " + data.time);
+		// socket.broadcast.to('room1').emit('update', data);
+		app.io.sockets.in(socket.roomname).emit('update', {state: data.state, time: data.time});
+	});
+
+	// socket.on('playPause', function(data){
+	// 	console.log("server received playpause: " +  data);
+	// 	// socket.broadcast.to('room1').emit('update', data);
+	// 	io.sockets.in('room1').emit('update', data);
+	// });
+
+	socket.on('stop', function(){
+		console.log("server received stop");
+		app.io.sockets.in(socket.roomname).emit('stopVideo')
 	});
 
 });
@@ -340,4 +326,3 @@ app.io.sockets.on("connection", function(socket) {
 function socketEventLog(log){
 	console.log("[Socket emit] - ", log);
 }
->>>>>>> vids are like this close to being in playlists

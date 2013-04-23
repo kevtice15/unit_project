@@ -72,7 +72,7 @@ $(document).ready(function(){
   	});	
 */
 
-  	$('#rooms').click(function() {
+  	$('.roomLI').click(function() {
   		leftValue -= (width - 0);
 /*   		leftValue -= Math.floor(width) */
   		console.log(leftValue);
