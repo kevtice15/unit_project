@@ -1,12 +1,12 @@
 var mongoose = require('mongoose');
 
-var UserSchema = new mongoose.Schema({
+var User = new mongoose.Schema({
 	google_id: String,
 	name: String,
 	room_id: mongoose.Schema.ObjectId
-}, {autoIndex: false});
+});
 
-module.exports = mongoose.model("UserSchema", UserSchema);
+module.exports = mongoose.model("User", User);
 
 /*
 User.ensureIndexes(function(err){
@@ -21,6 +21,6 @@ User.on('index', function(err){
 	}
 });
 */
-UserSchema.methods.addRoomId = function (roomId){
+User.methods.addRoomId = function (roomId){
 	this.room_id = roomId;
 };

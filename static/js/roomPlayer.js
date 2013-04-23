@@ -8,8 +8,31 @@ var currentTime;
 var playlist = [];
 
 
+function createPlaylist(pname, pshared){
+	$.ajax({
+		type: 'post',
+		data:{name: pname, shared: pshared},
+		url: '/playlists',
+		success: function(data){
+			console.log("Playlist created");
+		}
+	});
+}
+
+function getUserPlaylists(id){
+	$.ajax({
+		type: 'get',
+		url:'/users/' + id + '/playlists',
+		success: function(data){
+			console.log(data);
+		}
+	});
+}
+
 $(document).ready(function(){
 
+	
+	
 
 	function createVideo(id){
 		$('#ytplayer').attr('class', 'video-frame');
@@ -27,6 +50,8 @@ $(document).ready(function(){
 		leftValue -= 320;
 		$('#test-container').css({top: 0, left: leftValue, position: 'absolute'});
   	});	
+
+
 
   	$('#rooms').click(function() {
   		leftValue -= 320;

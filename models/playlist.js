@@ -38,4 +38,34 @@ var Playlist = new mongoose.Schema({
 	dj: mongoose.Schema.ObjectId
 });
 
+
+//Fills DJ and Creator fields in the playlist document after it is created
+Playlist.methods.addCreatorandDJ = function(user){
+	var Plist = mongoose.model("Playlist");
+	var fields = {
+		creator: user.id,
+		dj: user.id
+	};
+	console.log(this._id);
+	Plist.findByIdAndUpdate(this._id, {$set: fields}, function(err, resp){
+		if(err){
+			console.log(err);
+		}
+		else{
+			console.log("Updated playlist", resp);
+		}
+	});
+	console.log("Added creator and dj: ", user);
+};
+
+Playlist.methods.getUserPlaylists = function(id){
+	var Plist = mongoose.model("Playlist");
+	Plist.find({creator: id}, {}, function(err, docs){
+		if(err) console.log(err);
+		else{
+			console.log(docs);
+		}
+	});
+};
+
 module.exports = mongoose.model("Playlist", Playlist);
