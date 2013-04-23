@@ -225,12 +225,7 @@ db.once('open', function callback() {
 
 });
 	
-function handleUser(profile){
-	console.log("This will add a user to the db", profile);
-	//If the user is in the db, return the user
-	//var user = mongoose.model('user', UserSchema);
-	//var query = 
-}
+
 
 
 var server = app.listen(8889);

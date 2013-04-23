@@ -8,6 +8,27 @@ var currentTime;
 var playlist = [];
 
 
+function createPlaylist(pname, pshared){
+	$.ajax({
+		type: 'post',
+		data:{name: pname, shared: pshared},
+		url: '/playlists',
+		success: function(data){
+			console.log("Playlist created");
+		}
+	});
+}
+
+function getUserPlaylists(id){
+	$.ajax({
+		type: 'get',
+		url:'/users/' + id + '/playlists',
+		success: function(data){
+			console.log(data);
+		}
+	});
+}
+
 $(document).ready(function(){
 
 

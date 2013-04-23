@@ -70,6 +70,15 @@ exports.del = function(request, response){
 	});
 };
 
+exports.retrievePlaylists = function(request, response){
+	var Resource = mongoose.model("Playlist");
+	var userPlaylists = Resource.getUserPlaylists(request.params.id);
+	response.send({
+		playlist: userPlaylists,
+		success: true
+	});
+};
+
 function userLog(err){
 	console.log("[User route] - ", err);
 }
