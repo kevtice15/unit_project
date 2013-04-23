@@ -3,15 +3,13 @@ var mongoose = require('mongoose');
 exports.create = function(request, response){
 	var Resource = mongoose.model('Playlist');
 	var fields = request.body;
-	console.log("CREATE PLAYLIST REQUEST", request.user);
+
 	var r = new Resource(fields);
 	r.save(function(err, Resource){
 		if(err){
 			response.send(500, {error: err});
 		}
-
-		r.addCreatorandDJ(request.user);
-		response.send(Resource);
+		response.send(resource);
 	});
 };
 
@@ -70,15 +68,6 @@ exports.del = function(request, response){
 		}
 	});
 };
-
-exports.retrievePlaylists = function(request, response){
-	var Resource = mongoose.model("Playlist");
-	var userPlaylists = Resource.getUserPlaylists(request.params.id);
-	response.send({
-		playlist: userPlaylists,
-		success: true
-	});
-}
 
 function playlistLog(err){
 	console.log("[playlist route] - ", err);

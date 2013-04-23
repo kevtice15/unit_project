@@ -7,7 +7,6 @@ var express = require('express.io'),
 	// videos = require('./videos/videos.js');
 	app = express(),
 	passport = require('passport'),
-	util = require('util'),
 	GoogleStrategy = require('passport-google-oauth').OAuth2Strategy,
 	MemoryStore = express.session.MemoryStore,
 	sessionStore = new MemoryStore();
@@ -17,7 +16,6 @@ var GOOGLE_CLIENT_SECRET = "PzU_-cecGvD5VMhkiOTDIvvX";
 
 
 app.http().io().set('log level', 1);
-
 
 
 app.configure(function() {
@@ -123,11 +121,11 @@ passport.use(new GoogleStrategy({
 				if(err)
 					console.log(err);
 					done(null, false);
-				});
-				return done(null, newUser);
-			}
-		});
-      //return done(null, profile._json);
+			});
+			return done(null, newUser);
+		}
+	});
+      return done(null, profile._json);
     });
   }
 ));
@@ -223,11 +221,16 @@ function ensureAuthenticated(req, res, next) {
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function callback() {
 
-	//Not doing anything here; you can use the restful api with cURL
+//Not doing anything here; you can use the restful api with cURL
 
 });
 	
-
+function handleUser(profile){
+	console.log("This will add a user to the db", profile);
+	//If the user is in the db, return the user
+	//var user = mongoose.model('user', UserSchema);
+	//var query = 
+}
 
 
 var server = app.listen(8889);

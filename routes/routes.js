@@ -78,10 +78,6 @@ app.io.route('rooms', {
 		users.del(request, response);
 	});
 
-	app.get('/users/:id/playlists', function(request, response){
-		users.retrievePlaylists(request, response);
-	});
-
 	//Room routes
 	app.post('/rooms', function(request, response){
 		rooms.create(request, response);
@@ -103,7 +99,6 @@ app.io.route('rooms', {
 		rooms.del(request, response);
 	});
 
-
 	//Playlist routes
 	app.post('/playlists', function(request, response){
 		playlists.create(request, response);
@@ -124,7 +119,6 @@ app.io.route('rooms', {
 	app.del('/playlists/:id', function(request, response){
 		playlists.del(request, response);
 	});
-
 };
 
 function routesLog(type, log){
