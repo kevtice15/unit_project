@@ -1,4 +1,5 @@
 var mongoose = require('mongoose');
+//
 
 exports.create = function(request, response){
 	var Resource = mongoose.model('Playlist');
@@ -77,20 +78,23 @@ exports.addVideo = function(request, response){
 	var playlist_id = request.params.id;
 	console.log("Playlists playlist id", playlist_id);
 	var fields = request.body;
+	var newVideo = new Vid({youtube_id: fields.body.video_id, name: fields.body.video_name, votes: 0});
 	console.log("fields", fields);
-	var r = new Resource();
-	r.addNewVideo(playlist_id, fields.video_id, fields.video_name, function(docs, video){
-		console.log("DOCS", docs);
-		r.videos.push(video);
-		console.log(r.videos[0]);
-		r.save(function(err, Resource){
-			if(err){
-				response.send(500, {error: err});
-			}
+	Resource.findById(playlist_id, function(err, Resource){
+		if(err){
+			console.log(err);
+		}
+		else{
+			console.log("This is RESOURCE:", Resource);
+			Resource.videos.push(newVideo);
+			Resource.save(function(err){
+				if(err){
+					console.log(err);
+				}
+			});
 			response.send(Resource);
-		});
+		}
 	});
-	response.send(r);
 };
 
 function playlistLog(err){

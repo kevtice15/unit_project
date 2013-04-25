@@ -46,8 +46,21 @@
 					<img class="centerIcon" src="room.png"/>
 					<img class="rightIcon" src="plus.png"/>	
 				</div>
-				<div id="rooms"></div>
+				<ul id="rooms">
+					<li class="roomLI" id="room1">
+						<a href="#" onclick=clientJoinRoom('room1')>Room1</a>
+					</li>
+					<li class="roomLI" id="room2">
+						<a href="#" onclick=clientJoinRoom('room2')>Room2</a>
+					</li>
+					<li class="roomLI" id="create">
+						<input id="roomName" val=""></input>
+						<button href="#" onclick=clientCreateRoom($("#roomName").val())>Create Room</button>
+					</li>
+				</ul>
+				<!-- <div id="rooms"></div> -->
 			</div>
+			
 
 
 			<!--The Room container-->	
