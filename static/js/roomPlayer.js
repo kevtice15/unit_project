@@ -17,6 +17,7 @@ $(document).ready(function(){
 	var height = $(window).height();
 	console.log(width);
 	console.log(height);
+	var test;
 
 	function createVideo(id){
 		$('#ytplayer').attr('class', 'video-frame');
