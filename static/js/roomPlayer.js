@@ -78,6 +78,8 @@ $(document).ready(function(){
 /*   		leftValue -= Math.floor(width) */
   		console.log(leftValue);
 	  	$('#canvasDiv').css({top: 0, left: leftValue, position: 'absolute'});
+	  	
+	  	$(this).addClass('depressed');
   	});
   	
   	$('#backButton').click(function() {
@@ -152,7 +154,9 @@ $(document).ready(function(){
 		 console.log($(this));
 		 console.log($(this).find('.add'));
 		 console.log($(this).find('.add img'));
-	  	$(this).find('.add img').attr('src', 'check.png');
+		 $(this).find('.add img').attr('src', 'check.png');
+		 
+/* 		 $(this).addClass('depressed'); */
   	});
   	
 
